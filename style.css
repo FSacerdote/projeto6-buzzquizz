@@ -16,3 +16,6 @@ body{
     font-weight: 700;
     font-family: 'Roboto', sans-serif;
 }
+.escondido{
+    display: none; 
+}

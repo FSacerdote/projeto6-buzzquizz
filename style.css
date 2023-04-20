@@ -83,6 +83,9 @@ body{
     display: flex;
     flex-direction: column ;
 }
+.resposta:hover{
+    cursor: pointer;
+}
 .resposta img{
     margin-top: 20px;
     width: 330px;
@@ -95,6 +98,16 @@ body{
     font-size: 20px;
     line-height: 23px;
 }
+.apagado{
+    filter: opacity(0.3);
+}
+.correta{
+    color: #009C22;
+}
+.errada{
+    color: #FF4B4B;
+}
+
 /* CLasse usadas na página 1*/
 .screen1-content{
     display: flex;

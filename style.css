@@ -95,3 +95,95 @@ body{
     font-size: 20px;
     line-height: 23px;
 }
+/* CLasse usadas na página 1*/
+.screen1-content{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.criarQuiz-container{
+    width: 1051px;
+    height: 181px;
+    border: 3px dashed #D5D5D5;
+    border-radius: 5px;
+    display: flex;
+    flex-shrink: 0;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    Margin: 77px 195px;
+    color: #b9b9b9;
+    font-size: 20px;
+    font-weight: 400;
+    font-family: 'Roboto', sans-serif;
+    flex-shrink: 0;
+}
+.criarQuiz-container div{
+    width: 250px;
+    height: 107px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
+.criarQuiz-container button{
+    background-color: #fafafa;
+    height: 40px;
+    width: 151px;
+    border: 1px dashed #EC362D;
+    color: #EC362D;
+    border-radius: 50px;
+    font-size: 21px;
+    font-weight: 400;
+    font-family: 'Roboto', sans-serif;
+}
+
+.Todos-quizes{
+    width: 1050px;
+    font-size: 20x;
+    font-weight: 700;
+    color: black;
+    line-height: 23.44px;
+    font-family: 'Roboto', sans-serif;
+}
+.Quizz-lista-container{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.quizz-container{
+    Width: 340px;
+    Height: 181px;
+    margin: 5px;
+    display: inline-block;
+    position: relative;
+}
+
+.quizz-container img {
+    Width: 340px;
+    Height: 181px;
+    object-fit: cover;
+    position: absolute;
+  }
+  
+  .quizz-container label {
+    position: absolute;
+    font-size: 32px;
+    left: 18px;
+    bottom: 2px;
+    color: #FFFFFF;
+    font-size: 19px;
+    font-weight: 400;
+    font-family: 'Roboto', sans-serif;
+  }
+
+
+@media(max-width: 1100px){
+    .criarQuiz-container
+    {
+        width: 90%;
+    }
+
+    .Todos-quizes{
+        width: 90%;
+    }
+}

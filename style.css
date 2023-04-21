@@ -3,6 +3,7 @@
 }
 body{
     background-color: #FAFAFA;
+    font-family: 'Roboto', sans-serif;
 }
 .cabecalho{
     height: 69px;
@@ -19,8 +20,89 @@ body{
 .escondido{
     display: none; 
 }
+/* Tela 1*/
+.screen1-content{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.criarQuiz-container{
+    width: 73.26%;
+    max-width: 1051px;
+    height: 181px;
+    border: 3px dashed #D5D5D5;
+    border-radius: 5px;
+    display: flex;
+    flex-shrink: 0;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    Margin: 77px 195px;
+    color: #b9b9b9;
+    font-size: 20px;
+    font-weight: 400;
+    font-family: 'Roboto', sans-serif;
+    flex-shrink: 0;
+}
+.criarQuiz-container div{
+    width: 250px;
+    height: 107px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
+.criarQuiz-container button{
+    background-color: #fafafa;
+    height: 40px;
+    width: 151px;
+    border: 1px dashed #EC362D;
+    color: #EC362D;
+    border-radius: 50px;
+    font-size: 21px;
+    font-weight: 400;
+    font-family: 'Roboto', sans-serif;
+}
 
-/*tela 2*/
+.Todos-quizes{
+    width: 73%;
+    max-width: 1050px;
+    font-size: 20x;
+    font-weight: 700;
+    color: black;
+    line-height: 23.44px;
+    font-family: 'Roboto', sans-serif;
+}
+.Quizz-lista-container{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.quizz-container{
+    Width: 340px;
+    Height: 181px;
+    margin: 5px;
+    display: inline-block;
+    position: relative;
+}
+
+.quizz-container img {
+    Width: 340px;
+    Height: 181px;
+    object-fit: cover;
+    position: absolute;
+  }
+  
+  .quizz-container label {
+    position: absolute;
+    font-size: 32px;
+    left: 18px;
+    bottom: 2px;
+    color: #FFFFFF;
+    font-size: 19px;
+    font-weight: 400;
+    font-family: 'Roboto', sans-serif;
+  }
+/*Tela 2*/
 .tela2{
     display: flex;
     flex-direction: column;
@@ -164,85 +246,65 @@ body{
 /* CLasse usadas na página 1*/
 .screen1-content{
     display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
 }
-.criarQuiz-container{
-    width: 1051px;
-    height: 181px;
-    border: 3px dashed #D5D5D5;
-    border-radius: 5px;
+/*Tela 3*/
+.tela3{
     display: flex;
-    flex-shrink: 0;
+    flex-direction: column;
+    align-items: center;
+}
+span {
+    margin: 70px 0 30px 0;
+    font-size: 23px;
+    font-weight: 700;
+}
+.basic-info {
+    background-color: #FFFFFF;
+    width: 600px;
+    height: 256px;
+
+    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    Margin: 77px 195px;
-    color: #b9b9b9;
-    font-size: 20px;
-    font-weight: 400;
-    font-family: 'Roboto', sans-serif;
-    flex-shrink: 0;
-}
-.criarQuiz-container div{
-    width: 250px;
-    height: 107px;
-    display: flex;
-    align-items: center;
-    text-align: center;
-}
-.criarQuiz-container button{
-    background-color: #fafafa;
-    height: 40px;
-    width: 151px;
-    border: 1px dashed #EC362D;
-    color: #EC362D;
-    border-radius: 50px;
-    font-size: 21px;
-    font-weight: 400;
-    font-family: 'Roboto', sans-serif;
-}
+    gap: 10px;
 
-.Todos-quizes{
-    width: 1050px;
-    font-size: 20x;
-    font-weight: 700;
-    color: black;
-    line-height: 23.44px;
-    font-family: 'Roboto', sans-serif;
-}
-.Quizz-lista-container{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-.quizz-container{
-    Width: 340px;
-    Height: 181px;
-    margin: 5px;
-    display: inline-block;
-    position: relative;
-}
-
-.quizz-container img {
-    Width: 340px;
-    Height: 181px;
-    object-fit: cover;
-    position: absolute;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
   }
   
-  .quizz-container label {
-    position: absolute;
-    font-size: 32px;
-    left: 18px;
-    bottom: 2px;
-    color: #FFFFFF;
+input {
+    padding-left: 23px;
+    display: block;
+    width: 564px;
+    height: 46px;
+    border: 1px solid #D1D1D1;
+    border-radius: 5px;
     font-size: 19px;
-    font-weight: 400;
-    font-family: 'Roboto', sans-serif;
   }
-
-
+input::placeholder{
+    color: #BABABA;
+    font-weight: 400;
+    font-size: 19px;
+    font-style: italic;
+ }
+.next-step{
+    margin-top: 85px;
+    background-color: #EC362D;
+    width: 368.86px;
+    height: 54px;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 400;
+    font-size: 21px;
+    color: #FFF5F4;
+} 
+.next-step:hover{
+    cursor: pointer;
+} 
 @media(max-width: 1100px){
     .criarQuiz-container
     {

@@ -2,6 +2,7 @@ axios.defaults.headers.common['Authorization'] = 'thWBkfA2HxJeEDBnysTfueIT';
 let tela1 = document.querySelector(".tela1");
 let tela2 = document.querySelector(".tela2");
 let tela3 = document.querySelector(".tela3");
+let perguntasRespondidas;
 
 //Tela 1 - Lista de Quizzes
 
@@ -51,6 +52,7 @@ function selecionaQuiz(quiz){
 }   
 
 function carregaQuiz(resposta){
+    perguntasRespondidas = 0;
     console.log(resposta);
     tela1.classList.add("escondido");
     tela2.classList.remove("escondido");
@@ -75,7 +77,7 @@ function carregaQuiz(resposta){
         for (let j = 0; j < perguntas[i].answers.length; j++) {
             let respostas = document.getElementById(i);
             respostas.innerHTML += `
-            <div class="resposta">
+            <div onclick="selecionaResposta(this)" class="resposta ${perguntas[i].answers[j].isCorrectAnswer}">
                 <img src="${perguntas[i].answers[j].image}"/>
                 <p>${perguntas[i].answers[j].text}</p>
             </div>
@@ -83,9 +85,31 @@ function carregaQuiz(resposta){
         }
     }
 }
+function selecionaResposta(resposta) {
+    perguntasRespondidas++;
+    let respostas = resposta.parentNode;
+    let listaRespostas = respostas.querySelectorAll(".resposta");
+    for (let i = 0; i < listaRespostas.length; i++) {
+        listaRespostas[i].classList.add("apagado");
+        listaRespostas[i].onclick = false;
+        if(listaRespostas[i].classList.contains("true")) {
+            listaRespostas[i].classList.add("correta");
+        }else{
+            listaRespostas[i].classList.add("errada");
+        }
+    }
+    resposta.classList.remove("apagado");
+    let perguntas = document.querySelectorAll(".container-perguntas");
+    setTimeout(()=>{
+        perguntas[perguntasRespondidas].scrollIntoView();
+    }, 2000);
+}
 function comparador() { 
 	return Math.random() - 0.5; 
 }
+let novoQuiz = {id: 3};
+selecionaQuiz(novoQuiz);
+
 
 //Tela 3 - Criação do Quizz
 

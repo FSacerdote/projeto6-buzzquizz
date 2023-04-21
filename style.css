@@ -63,6 +63,12 @@ body{
     font-family: 'Roboto', sans-serif;
 }
 
+.criarQuiz-container button:hover{
+    background-color: #EC362D;
+    color: white;
+    cursor: pointer;
+}
+
 .Todos-quizes{
     width: 73%;
     max-width: 1050px;
@@ -81,27 +87,34 @@ body{
     Width: 340px;
     Height: 181px;
     margin: 5px;
-    display: inline-block;
     position: relative;
+    border-radius: 5px;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    transition: background-size 0.5s;
+    display: flex;
+    align-items:  flex-end;
+    flex-wrap: wrap;
 }
 
-.quizz-container img {
-    Width: 340px;
-    Height: 181px;
-    object-fit: cover;
-    position: absolute;
-  }
-  
-  .quizz-container label {
-    position: absolute;
-    font-size: 32px;
-    left: 18px;
-    bottom: 2px;
-    color: #FFFFFF;
+.quizz-container:hover{
+    border: 1px solid #D5D5D5;
+}
+
+.quizz-container:hover > p{
+    text-decoration: underline;
+}
+
+.quizz-container p{
+    margin: 0px 20px 7px 20px;
+    word-break: break-all;
     font-size: 19px;
+    color: #fff;
     font-weight: 400;
     font-family: 'Roboto', sans-serif;
-  }
+    text-overflow: ellipsis;    
+}
 /*Tela 2*/
 .tela2{
     display: flex;

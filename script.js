@@ -17,32 +17,35 @@ promisse.catch(resposta => console.log('erro ao conectar com o servidor: ' + res
 let Lista_Quizzes; //Variavel que vai receber a lista de quizzes
 
 //Função para iniciar pegar lista do servidor quando conseguir conexão
-function Get_Lista(){
+function Get_Lista(resposta){
     console.log('conectado!');
-    const promisse = axios.get('https://mock-api.driven.com.br/api/vm/buzzquizz/quizzes');
-    promisse.then(preencher_pagina1);
-}
-
-function preencher_pagina1(resposta){
     Lista_Quizzes = resposta.data;
     const lista = document.querySelector('.Quizz-lista-container');
     lista.innerHTML = '';
-    Lista_Quizzes.forEach(adicionar_Quizz);
+    resposta.data.forEach(adicionar_Quizz);
 }
 
-function adicionar_Quizz(elemento, index){
+
+function adicionar_Quizz(elemento){
     const lista = document.querySelector('.Quizz-lista-container');
 
+    const id = elemento.id;
     const titulo = elemento.title;
     const img = elemento.image;
 
-    //console.log(img + " "+index);
-    lista.innerHTML += 
-    `<div class="quizz-container" onclick="selecionaQuiz(${elemento.id})">
-    <img src="${img}" alt="">
-    <label>${titulo}</label>
-    </div>`
 
+
+        //<img src="https://i.stack.imgur.com/vVbxw.png" alt="erro na imagem">
+
+
+        lista.innerHTML += 
+        `<div id="${id}" class="quizz-container" onclick="selecionaQuiz(${elemento.id})">
+            <p>${titulo}</p>
+        </div>`
+
+        const el = document.getElementById(id);
+        el.style.backgroundImage = `linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 64.58%, #000000 100%),url('${img}'), url('https://developers.google.com/static/maps/documentation/maps-static/images/error-image-generic.png')`;
+        //  onerror="corrigirImagem(this)"
 }
 
 // tela 2 - Página de um Quizz
@@ -157,8 +160,8 @@ function comparador() {
 
 //Tela 3 - Criação do Quizz
 
-const botao = document.querySelector('button');
-botao.addEventListener('click', function preencher_pagina3() {
+
+function preencher_pagina3() {
   tela1.classList.add('escondido');
   tela2.classList.add('escondido');
   tela3.classList.remove('escondido');
@@ -173,7 +176,7 @@ botao.addEventListener('click', function preencher_pagina3() {
     </div>
     
     <div onclick="validarInformacoesQuizz()" class="next-step">Prosseguir para criar perguntas</div>`
-});
+};
 
 const btnNextStep = document.querySelector('.next-step');
 btnNextStep.addEventListener('click', validarInformacoesQuizz);

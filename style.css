@@ -31,11 +31,11 @@ body{
     width: 100%;
     position: relative;
     height: 227px;
+    overflow-y: hidden;
 }
 .header-Quiz img{
     filter: brightness(0.4);
     width: 100%;
-    height: 100%;
 }
 .header-Quiz p{
     position: absolute;
@@ -49,7 +49,7 @@ body{
     color: #FFFFFF;
 }
 
-.container-perguntas{
+.container-final, .container-perguntas{
     padding-top: 28px;
     padding-bottom: 36px;
     display: flex;
@@ -60,7 +60,7 @@ body{
     background-color: white;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
 }
-.pergunta{
+.level, .pergunta{
     width: 688px;
     height: 138px;
     background: #434CA0;
@@ -73,6 +73,26 @@ body{
     align-items: center;
     justify-content: center;
 }
+.level{
+    height: 99px;
+    background: #EC362D;
+}
+.levels-info{
+    margin-top: 18px;
+    width: 688px;
+    display: flex;
+}
+.levels-info img{
+    width: 364px;
+    margin-right: 21px;
+}
+.levels-info p{
+    font-family: 'Roboto';
+    font-weight: 700;
+    font-size: 19px;
+    line-height: 25px;
+    color: #484848;
+}
 .respostas{
     width: 688px;
     display: flex;
@@ -83,7 +103,7 @@ body{
     display: flex;
     flex-direction: column ;
 }
-.resposta:hover{
+.reiniciar:hover, .voltar:hover, .resposta:hover{
     cursor: pointer;
 }
 .resposta img{
@@ -97,6 +117,39 @@ body{
     font-weight: 700;
     font-size: 20px;
     line-height: 23px;
+}
+.reiniciar{
+    width: 260px;
+    height: 52px;
+    margin-top: 57px;
+    background: #EC362D;
+    border-radius: 15px;
+    font-family: 'Roboto';
+    font-weight: 400;
+    font-size: 21px;
+    line-height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFF5F4;
+    border: none;
+}
+.voltar{
+    width: 220px;
+    height: 44px;
+    margin-bottom: 85px;
+    margin-top: 16px;
+    background: transparent;
+    border-radius: 15px;
+    font-family: 'Roboto';
+    font-weight: 400;
+    font-size: 21px;
+    line-height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #818181;
+    border: none;
 }
 .apagado{
     filter: opacity(0.3);

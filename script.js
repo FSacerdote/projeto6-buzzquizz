@@ -3,26 +3,21 @@ let tela1 = document.querySelector(".tela1");
 let tela2 = document.querySelector(".tela2");
 let tela3 = document.querySelector(".tela3");
 let perguntasRespondidas;
+let respostasCertas;
+let quizAtual;
 
 // tela 2 - página de um quiz
 
-let promisse = axios.get("https://mock-api.driven.com.br/api/vm/buzzquizz/quizzes");
-promisse.then((resposta)=>{
-    console.log(resposta.data);
-});
-promisse.catch((erro)=>{
-    console.log(erro.data);
-});
-
-function selecionaQuiz(quiz){
-    let id = quiz.id;
+function selecionaQuiz(id){
     let promessaQuiz = axios.get(`https://mock-api.driven.com.br/api/vm/buzzquizz/quizzes/${id}`);
     promessaQuiz.then(carregaQuiz);
 }   
 
 function carregaQuiz(resposta){
+    tela2.innerHTML = "";
+    respostasCertas = 0;
     perguntasRespondidas = 0;
-    console.log(resposta);
+    quizAtual = resposta;
     tela1.classList.add("escondido");
     tela2.classList.remove("escondido");
     tela3.classList.add("escondido");
@@ -50,7 +45,7 @@ function carregaQuiz(resposta){
                 <img src="${perguntas[i].answers[j].image}"/>
                 <p>${perguntas[i].answers[j].text}</p>
             </div>
-            `
+            `;
         }
     }
 }
@@ -58,6 +53,9 @@ function selecionaResposta(resposta) {
     perguntasRespondidas++;
     let respostas = resposta.parentNode;
     let listaRespostas = respostas.querySelectorAll(".resposta");
+    if (resposta.classList.contains("true")) {
+        respostasCertas++;
+    }
     for (let i = 0; i < listaRespostas.length; i++) {
         listaRespostas[i].classList.add("apagado");
         listaRespostas[i].onclick = false;
@@ -69,15 +67,53 @@ function selecionaResposta(resposta) {
     }
     resposta.classList.remove("apagado");
     let perguntas = document.querySelectorAll(".container-perguntas");
-    setTimeout(()=>{
-        perguntas[perguntasRespondidas].scrollIntoView();
-    }, 2000);
+    if(perguntasRespondidas === perguntas.length){
+        fimDeQuiz();
+    }else{
+        setTimeout(()=>{
+            if (perguntasRespondidas < perguntas.length) {
+                perguntas[perguntasRespondidas].scrollIntoView();
+            }
+        }, 2000);
+    }
+}
+function fimDeQuiz(){
+    let levels = quizAtual.data.levels;
+    let acerto = (respostasCertas/perguntasRespondidas*100).toFixed(0);
+    let idLevel = 0;
+    for (let i = 0; i < levels.length; i++) {
+        if (acerto >= levels[i].minValue) {
+            idLevel = i;
+        }
+    }
+    tela2.innerHTML += `
+            <div class="container-final">
+                <div class="level">${acerto}% de acerto: ${levels[idLevel].title}</div>
+                <div class="levels-info">
+                    <img src="${levels[idLevel].image}"/>
+                    <p>${levels[idLevel].text}</p>
+                </div>
+            </div>
+            <button class="reiniciar" onclick="reiniciaQuiz()">Reiniciar Quizz</button>
+            <button class="voltar" onclick="voltaHome()">Voltar pra home</button>
+    `;
+    let final = document.querySelector(".container-final");
+    setTimeout(()=>{final.scrollIntoView();}, 2000);
+}
+function reiniciaQuiz(){
+    let comeco = document.querySelector(".header-Quiz");
+    comeco.scrollIntoView();
+    console.log(quizAtual.data.id);
+    selecionaQuiz(quizAtual.data.id);
+}
+function voltaHome(){
+    tela2.innerHTML = "";
+    tela1.classList.remove("escondido");
+    tela2.classList.add("escondido");
 }
 function comparador() { 
 	return Math.random() - 0.5; 
 }
-let novoQuiz = {id: 3};
-selecionaQuiz(novoQuiz);
 
 
 const promise = axios.get('https://mock-api.driven.com.br/api/vm/buzzquizz/quizzes');

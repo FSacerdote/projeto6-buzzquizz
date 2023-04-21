@@ -107,8 +107,8 @@ function selecionaResposta(resposta) {
 function comparador() { 
 	return Math.random() - 0.5; 
 }
-let novoQuiz = {id: 3};
-selecionaQuiz(novoQuiz);
+/*let novoQuiz = {id: 3};
+selecionaQuiz(novoQuiz);*/
 
 
 //Tela 3 - Criação do Quizz

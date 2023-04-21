@@ -38,7 +38,7 @@ function adicionar_Quizz(elemento, index){
 
     //console.log(img + " "+index);
     lista.innerHTML += 
-    `<div class="quizz-container" onclick="selecionaQuiz(quiz)">
+    `<div class="quizz-container" onclick="selecionaQuiz(${elemento.id})">
     <img src="${img}" alt="">
     <label>${titulo}</label>
     </div>`

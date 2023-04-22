@@ -9,9 +9,9 @@ let quizAtual;
 //Tela 1 - Lista de Quizzes
 
 let quiz;
-
-const promisse = axios.get('https://mock-api.driven.com.br/api/vm/buzzquizz/quizzes');
-promisse.then(Get_Lista);
+tela1.classList.add('escondido');
+//const promisse = axios.get('https://mock-api.driven.com.br/api/vm/buzzquizz/quizzes');
+//promisse.then(Get_Lista);
 promisse.catch(resposta => console.log('erro ao conectar com o servidor: ' + resposta));
 
 let Lista_Quizzes; //Variavel que vai receber a lista de quizzes
@@ -254,6 +254,7 @@ function validarInfoQuizz() {
       <div onclick="validarPerguntas()" class="next-step">Prosseguir para criar níveis</div>
     `;
  }
+
  function toggleQuestion(questionHeader) {
     const question = questionHeader.parentNode;
     const questionContent = question.querySelector('.question-content');
@@ -341,10 +342,123 @@ function validarInfoQuizz() {
     return true;
   }
   
+ 
   
+
+  //função para preencher os níveis na tela de cadastro (retorna HTML)
   
+  function preencher_cadastro_nivel(qtdNiveis){
+    let pagina = `<span>Agora, decida os níveis</span>`
+    
+    pagina+=`
+    <div class="lvl-container">
+        <div class="lvl-head" onclick="lvlscroll('lvl1','lvlbtn1')">
+            <div>Nível 1</div>   
+            <img id= 'lvlbtn1' class='escondido' src="./img.png" alt="caderno">
+        </div>
+        <div id='lvl1' class="lvl-scroll">
+            <textarea placeholder="  Título do nivel"></textarea>
+            <textarea placeholder="  % de Acerto mínimo"></textarea>
+            <textarea placeholder="  URL da imagem"></textarea>
+            <textarea class="big" placeholder="  Descrição do nível"></textarea>
+        </div>
+    </div>`;
+
+    for(let cont = 2;cont <= qtdNiveis;cont++){
+        pagina+= `
+        <div class="lvl-container">
+            <div class="lvl-head" onclick="lvlscroll('lvl${cont}','lvlbtn${cont}')">
+                <div>Nível ${cont}</div>   
+                <img id= 'lvlbtn${cont}' src="./img.png" alt="caderno">
+            </div>
+            <div id='lvl${cont}' class="lvl-scroll lvlHidden">
+                <textarea placeholder="  Título do nivel"></textarea>
+                <textarea placeholder="  % de Acerto mínimo"></textarea>
+                <textarea placeholder="  URL da imagem"></textarea>
+                <textarea class="big" placeholder="  Descrição do nível"></textarea>
+            </div>
+        </div>`;
+    }
+
+    pagina+= `
+        <div onclick="alert('fim')" class="next-step btn-ajust">Finalizar Quizz</div> 
+    `;
+    return pagina;
+  }
   
+  //Função para escrolar texto e desativar botão na página de cadastro do nivel
+  function lvlscroll(id,btn){
+    const el = document.getElementById(id);
+    const icone = document.getElementById(btn);
+    el.classList.toggle('lvlHidden');
+    icone.classList.toggle('escondido');
+  }
   
+  //função para validar nível
+  function validarNivel(){
+    let pagina = document.querySelectorAll('.lvl-scroll');
+    let resultado = true;
+    let porcentagens = [];
+    pagina.forEach(el=>{
+        let nivel = el.querySelectorAll('textarea');
+        porcentagens.push(nivel[1].value);
+        resultado = resultado && (validar_titulo(nivel[0].value))&&(validar_porcentagem(nivel[1].value))&&(validar_url(nivel[2].value))&&(validar_descricao(nivel[3].value));
+        console.log(resultado);
+    }
+    )
+
+    resultado = resultado && validar_lista_porcentagens(porcentagens);
+    console.log(resultado);
+    console.log(porcentagens);
+    return resultado;
+  }
+
+  function validar_titulo(titulo){
+    if(titulo.length > 19 && titulo.length < 66){
+        return true;
+    }
+    return false;
+  }
+
+  function validar_porcentagem(valor){
+    if(!(isNaN(valor)) && valor != '' ){
+        if(valor >= 0 & valor < 101){
+            return true;
+        }
+    }
+    return false;
+  }
+   function validar_url(url){
+    if (url.includes('https')) {
+        return true;
+    }
+    return false;
+   }
+
+   function validar_descricao(texto){
+    if(texto.length>29){
+        return true;
+    }
+    return false;
+   }
+
+   function validar_lista_porcentagens(lista){
+    const x = lista.map(Number)
+        for(let cont1 = 0; cont1<x;cont1++){
+            let elemento = x[cont1];
+            let cont2 = cont1+1;
+            for(cont2; cont2<x;cont2++){
+                let elemento_teste = x[cont2]
+                if(elemento_teste == elemento){
+                    return false;
+                }
+            }
+        }
+        if(x.includes(0)){
+            return true;
+        }
+    return false;
+   }
   
   
   

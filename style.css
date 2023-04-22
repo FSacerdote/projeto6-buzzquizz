@@ -422,12 +422,73 @@ input::placeholder{
 .question-content.escondido {
     display: none;
 }
-  
- 
+
+
+
+.lvl-container{
+    width: 600px;
+    background-color: white;
+    margin-bottom: 24px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
+}
+
+.lvl-head{
+    background-color: white;
+    height: 75px;
+    padding: 17px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.lvl-head div{
+    font-family: 'Roboto';
+    font-weight: 700;
+    Size: 20px;
+    line-height: 23.44px;
+    color: #000000;
+}
+
+.lvl-scroll{
+    height: 240px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+    transition: height 0.3s ease-in-out;;
+}
+
+.lvl-scroll textarea{
+    margin: 6px;
+    flex-shrink: 0;
+    Width: 341px;
+    Height: 46px;
+    border: 1px solid #D1D1D1;
+    border-radius: 5px;
+    font-family: 'Roboto';
+    color: black;
+}
+
+.lvl-scroll textarea::placeholder { 
+    font-family: 'Roboto';
+    font-weight: 400;
+    font-style: italic;
+    line-height: 22px;
+    color: #BABABA;
+    font-size: 19px;
+    vertical-align: middle;
+  }
+
+.lvlHidden{
+    height: 0px;
+}
 
 .escondido{
     display: none; 
 }
+
+
+
+
 @media(max-width: 1100px){
     .criarQuiz-container
     {
@@ -437,5 +498,18 @@ input::placeholder{
 
     .Todos-quizes{
         width: 90%;
+    }
+
+    .lvl-container{
+        width: 100%;
+        max-width: 600px;
+    }
+    .lvl-scroll textarea{
+        width: 90%;
+        max-width: 375px;
+    }
+    .btn-ajust{
+        width: 86%;
+        max-width: 324px;
     }
 }

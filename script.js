@@ -1,7 +1,7 @@
 axios.defaults.headers.common['Authorization'] = 'thWBkfA2HxJeEDBnysTfueIT';
-let tela1 = document.querySelector(".tela1");
-let tela2 = document.querySelector(".tela2");
-let tela3 = document.querySelector(".tela3");
+const tela1 = document.querySelector(".tela1");
+const tela2 = document.querySelector(".tela2");
+const tela3 = document.querySelector(".tela3");
 let perguntasRespondidas;
 let respostasCertas;
 let quizAtual;
@@ -168,20 +168,17 @@ function preencher_pagina3() {
 
   tela3.innerHTML = 
   `<span>Comece pelo começo</span>
-  <div class="basic-info">
-    <input type="text" placeholder="Título do seu quizz">
-    <input type="text" placeholder="URL da imagem do seu quizz">
-    <input type="text" placeholder="Quantidade de perguntas do quizz">
-    <input type="text" placeholder="Quantidade de níveis do quizz">
+    <div class="basic-info">
+        <input type="text" placeholder="Título do seu quizz">
+        <input type="text" placeholder="URL da imagem do seu quizz">
+        <input type="text" placeholder="Quantidade de perguntas do quizz">
+        <input type="text" placeholder="Quantidade de níveis do quizz">
     </div>
-    
-    <div onclick="validarInformacoesQuizz()" class="next-step">Prosseguir para criar perguntas</div>`
+        
+    <div onclick="validarInfoQuizz()" class="next-step">Prosseguir para criar perguntas</div>`
 };
 
-const btnNextStep = document.querySelector('.next-step');
-btnNextStep.addEventListener('click', validarInformacoesQuizz);
-
-function validarInformacoesQuizz() {
+function validarInfoQuizz() {
     const titulo = document.querySelector('input[placeholder="Título do seu quizz"]');
     const urlImagem = document.querySelector('input[placeholder="URL da imagem do seu quizz"]');
     const qtdPerguntas = document.querySelector('input[placeholder="Quantidade de perguntas do quizz"]');
@@ -197,19 +194,147 @@ function validarInformacoesQuizz() {
       return;
     }
   
-    if (!qtdPerguntas.value || parseInt(qtdPerguntas.value) < 3) {
+    if (!qtdPerguntas.value || isNaN(parseInt(qtdPerguntas.value)) || parseInt(qtdPerguntas.value) < 3) {
       alert('Por favor, informe uma quantidade de perguntas maior ou igual a 3.');
       return;
     }
   
-    if (!qtdNiveis.value || parseInt(qtdNiveis.value) < 2) {
+    if (!qtdNiveis.value || isNaN(parseInt(qtdNiveis.value)) || parseInt(qtdNiveis.value) < 2) {
       alert('Por favor, informe uma quantidade de níveis maior ou igual a 2.');
       return;
     }
   
-    // Caso todas as validações estejam corretas, podemos fazer o envio dos dados para a API
-    // utilizando o formato JSON indicado.
+    let perguntasHTML = '';
+
+    for (let i = 1; i <= parseInt(qtdPerguntas.value); i++) {
+      let collapsedClass = i > 1 ? 'collapsed' : '';
+      perguntasHTML += `
+        <div class="create-question ${collapsedClass}">
+          <div class="question-header" onclick="toggleQuestion(this)">
+            <span>Pergunta ${i}</span>
+            <img src="./img.png">
+          </div>
+          <div class="question-content">
+            <input type="text" placeholder="Texto da pergunta">
+            <input type="text" placeholder="Cor de fundo da pergunta">
+      
+            <span>Resposta correta</span>
+            <input type="text" placeholder="Resposta correta">
+            <input type="text" placeholder="URL da imagem">
+      
+            <span>Respostas incorretas</span>
+            <input type="text" placeholder="Resposta incorreta 1">
+            <input type="text" placeholder="URL da imagem 1">
+            <input type="text" placeholder="Resposta incorreta 2">
+            <input type="text" placeholder="URL da imagem 2">
+            <input type="text" placeholder="Resposta incorreta 3">
+            <input type="text" placeholder="URL da imagem 3">
+          </div>
+        </div>
+      `;
+    }
+    
+    tela3.innerHTML = `
+      <span>Crie suas perguntas</span>
+      <div class="questions">
+        ${perguntasHTML}
+      </div>
+      <div onclick="validarPerguntas()" class="next-step">Prosseguir para criar níveis</div>
+    `;
+ }
+ function toggleQuestion(questionHeader) {
+    const question = questionHeader.parentNode;
+    const questionContent = question.querySelector('.question-content');
+  
+    const allQuestions = document.querySelectorAll('.create-question');
+  
+    allQuestions.forEach((q) => {
+      const qHeader = q.querySelector('.question-header');
+      const qContent = q.querySelector('.question-content');
+  
+      if (q !== question) {
+        qHeader.classList.remove('expanded');
+        qContent.classList.add('escondido');
+        q.classList.add('collapsed');
+        q.classList.remove('expanded');
+        qHeader.querySelector('img').classList.remove('escondido'); 
+      }
+    });
+  
+    if (question.classList.contains('collapsed')) {
+      question.classList.remove('collapsed');
+      question.classList.add('expanded');
+      questionHeader.classList.add('expanded');
+      questionContent.classList.remove('escondido');
+      questionHeader.querySelector('img').classList.add('escondido'); 
+    } else {
+      question.classList.remove('expanded');
+      question.classList.add('collapsed');
+      questionHeader.classList.remove('expanded');
+      questionContent.classList.add('escondido');
+      questionHeader.querySelector('img').classList.remove('escondido');
+    }
   }
+  function validarPerguntas() {
+    let perguntas = document.querySelectorAll(".create-question");
+  
+    for (let i = 0; i < perguntas.length; i++) {
+      let pergunta = perguntas[i];
+  
+      let textoPergunta = pergunta.querySelector("input[type='text'][placeholder='Texto da pergunta']").value;
+      if (textoPergunta.length < 20) {
+        alert("O texto da pergunta " + (i + 1) + " deve ter pelo menos 20 caracteres.");
+        return false;
+      }
+  
+      let corFundo = pergunta.querySelector("input[type='text'][placeholder='Cor de fundo da pergunta']").value;
+      if (!/^#[0-9A-Fa-f]{6}$/.test(corFundo)) {
+        alert("A cor de fundo da pergunta " + (i + 1) + " deve ser uma cor em hexadecimal.");
+        return false;
+      }
+  
+      let respostaCorreta = pergunta.querySelector("input[type='text'][placeholder='Resposta correta']").value;
+      if (respostaCorreta === "") {
+        alert("A resposta correta da pergunta " + (i + 1) + " não pode estar vazia.");
+        return false;
+      }
+  
+      let urlImagemCorreta = pergunta.querySelector("input[type='text'][placeholder='URL da imagem']").value;
+      if (!isUrlValida(urlImagemCorreta)) {
+        alert("A URL da imagem da resposta correta da pergunta " + (i + 1) + " deve ter formato de URL.");
+        return false;
+      }
+  
+      let respostasIncorretas = pergunta.querySelectorAll("input[type='text'][placeholder^='Resposta incorreta']");
+      let peloMenosUmaRespostaIncorretaPreenchida = false;
+  
+      for (let j = 0; j < respostasIncorretas.length; j += 2) {
+        let respostaIncorreta = respostasIncorretas[j].value;
+        if (respostaIncorreta !== "") {
+          peloMenosUmaRespostaIncorretaPreenchida = true;
+          let urlImagemIncorreta = respostasIncorretas[j + 1].value;
+          if (!isUrlValida(urlImagemIncorreta)) {
+            alert("A URL da imagem da resposta incorreta da pergunta " + (i + 1) + " deve ter formato de URL.");
+            return false;
+          }
+        }
+      }
+  
+      if (!peloMenosUmaRespostaIncorretaPreenchida) {
+        alert("Pelo menos uma resposta incorreta da pergunta " + (i + 1) + " deve estar preenchida.");
+        return false;
+      }
+    }
+  
+    return true;
+  }
+  
+  
+  
+  
+  
+  
+  
   
 
 

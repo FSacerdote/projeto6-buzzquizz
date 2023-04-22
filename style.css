@@ -317,7 +317,72 @@ input::placeholder{
 } 
 .next-step:hover{
     cursor: pointer;
+}
+.create-question {
+    background-color: #FFFFFF;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 25px;
+    width: 600px;
+    max-height: 75px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out;
+}
+.create-question.expanded {
+    max-height: 825px;
+    transition: max-height 0.3s ease-in-out;
+}
+.create-question:not(.expanded) {
+    transition: max-height 0.3s ease-in-out;
+}
+.create-question.collapsed {
+    max-height: 75px;
+}
+  
+
+  
+.question-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.question-header img{
+    width: 26px;
+    height: 23px;
+    margin-right: 20px;
+}
+.question-header:hover{
+    cursor: pointer;
+}
+.question-content{
+    display: flex;
+    flex-direction: column;
+}
+.create-question span {
+    margin: 28px 0 25px 17px;
+}
+.create-question input {
+    margin: 0 0 14px 17px;
+}
+.collapsed{
+    height: 75px;
 } 
+.create-question.collapsed .question-header {
+    border-bottom: none;
+}
+.create-question.collapsed .question-content {
+    display: none;
+}
+.create-question.expanded {
+    height: auto;
+}
+  
+.question-content.escondido {
+    display: none;
+}
+  
+ 
 @media(max-width: 1100px){
     .criarQuiz-container
     {

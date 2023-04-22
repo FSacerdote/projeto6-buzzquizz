@@ -175,11 +175,11 @@ body{
     width: 100%;
     position: relative;
     height: 227px;
-    overflow-y: hidden;
 }
 .header-Quiz img{
     filter: brightness(0.4);
     width: 100%;
+    height: 100%;
 }
 .header-Quiz p{
     position: absolute;
@@ -255,7 +255,6 @@ body{
 .resposta img{
     margin-top: 20px;
     width: 330px;
-    height: 175px;
 }
 .resposta p{
     width: 330px;
@@ -526,5 +525,49 @@ input::placeholder{
     .btn-ajust{
         width: 86%;
         max-width: 324px;
+    }
+    .container-perguntas, .container-final{
+        width: 100%;
+    }
+    .pergunta, .respostas, .level, .levels-info{
+        width: 90%;
+    }
+    .pergunta{
+        height: 89px;
+    }
+    .header-Quiz{
+        height: 142px;
+    }
+    .header-Quiz p, .pergunta, .level{
+        text-align: center;
+        font-size: 19px;
+        line-height: 22px;
+    }
+    .resposta{
+        width: 47%;
+    }
+    .resposta img, .resposta p, .levels-info img{
+        font-size: 13px;
+        line-height: 15px;
+        width: 100%;
+    }
+    .levels-info{
+        flex-direction: column;
+    }
+    .levels-info p{
+        width: 100%;
+        margin-top: 9px;
+        font-size: 17px;
+        line-height: 20px;
+    }
+    .reiniciar, .voltar{
+        height: 44px;
+        width: 220px;
+    }
+    .reiniciar{
+        margin-top: 34px;
+    }
+    .voltar{
+        margin-bottom: 66px;
     }
 }

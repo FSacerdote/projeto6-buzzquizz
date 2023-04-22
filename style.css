@@ -507,6 +507,9 @@ input::placeholder{
         width: 90%;
         margin: none;
     }
+    .texto1{
+        justify-content: space-between;
+    }
 
     .Todos-quizes{
         width: 90%;

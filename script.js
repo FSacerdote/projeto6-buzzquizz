@@ -9,9 +9,8 @@ let quizAtual;
 //Tela 1 - Lista de Quizzes
 
 let quiz;
-tela1.classList.add('escondido');
-//const promisse = axios.get('https://mock-api.driven.com.br/api/vm/buzzquizz/quizzes');
-//promisse.then(Get_Lista);
+const promisse = axios.get('https://mock-api.driven.com.br/api/vm/buzzquizz/quizzes');
+promisse.then(Get_Lista);
 promisse.catch(resposta => console.log('erro ao conectar com o servidor: ' + resposta));
 
 let Lista_Quizzes; //Variavel que vai receber a lista de quizzes

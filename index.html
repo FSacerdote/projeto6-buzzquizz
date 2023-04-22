@@ -17,16 +17,41 @@
         <div class="tela1">
             <div class="screen1-content">
                 <!-- Div responsavel pelo conteúdo -->
-                <div class="criarQuiz-container">
+                <div class="criarQuiz-container centro estilo_inicial">
                     <!-- Implementar depois de conseguir criar Quizes-->
-                    <div>
+                    <div class="msg-box">
                         Você não criou nenhum quizz ainda :(
+                            <button onclick="preencher_pagina3()">Criar Quiz</button>
                     </div>
-                    <button onclick="preencher_pagina3()">Criar Quiz</button>
+
+                    <div class= "Quizz-cadastrados-container escondido" >
+                        <div class="texto1">Seus Quizzes
+                            <ion-icon name="add-circle" onclick="preencher_pagina3()"></ion-icon>
+                        </div>
+                        <div class="container_centro">
+                            <div class="Quizz-cadastrado-lista">
+                                <div  id = '30' class="quizz-container" onclick="selecionaQuiz(35)">
+                                    <p>titulo</p>
+                                </div>
+                                <div  class="quizz-container" onclick="selecionaQuiz(35)">
+                                    <p>titulo</p>
+                                </div>
+                                <div  class="quizz-container" onclick="selecionaQuiz(35)">
+                                    <p>titulo</p>
+                                </div>
+                                <div  class="quizz-container" onclick="selecionaQuiz(35)">
+                                    <p>titulo</p>
+                                </div>
+                                <div  class="quizz-container" onclick="selecionaQuiz(35)">
+                                    <p>titulo</p>
+                            </div>
+                        </div> 
+                        </div>
+                    </div>
                 </div>
                 <!-- Div contendo o conteudo que foi pego do servidor-->
                 <div class="Todos-quizes">
-                    Todos os Quizzes
+                    <div>Todos os Quizzes</div>
                     <div class="Quizz-lista-container">
 
                     </div>
@@ -38,7 +63,13 @@
         <div class="tela3 escondido"></div>
     </div>
     <div class="Quizz-lista-container"></div>
+
+    <!-- Importação do Ion Icon para o botão-->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <!-- Importação do Axio-->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!-- Importação do script-->
     <script src="script.js"></script>
 </body>
 </html>

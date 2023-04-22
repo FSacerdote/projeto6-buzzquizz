@@ -39,13 +39,25 @@ function adicionar_Quizz(elemento){
 
 
         lista.innerHTML += 
-        `<div id="${id}" class="quizz-container" onclick="selecionaQuiz(${elemento.id})">
+        `<div class="quizz-container Quizz${id}" onclick="selecionaQuiz(${elemento.id})">
             <p>${titulo}</p>
         </div>`
 
-        const el = document.getElementById(id);
-        el.style.backgroundImage = `linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 64.58%, #000000 100%),url('${img}'), url('https://developers.google.com/static/maps/documentation/maps-static/images/error-image-generic.png')`;
+        const el = document.querySelectorAll('.Quizz'+id);
+        const back = `linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 64.58%, #000000 100%),url('${img}'), url('https://developers.google.com/static/maps/documentation/maps-static/images/error-image-generic.png')`;
+        el.forEach(elemento => elemento.style.backgroundImage = back);
         //  onerror="corrigirImagem(this)"
+}
+
+function carregarMemoria(){
+    const container = document.querySelector('.criarQuiz-container');
+    container.classList.remove('centro','estilo_inicial');
+    
+    const div1 = document.querySelector('.msg-box');
+    div1.classList.add('escondido');
+
+    const div2 = document.querySelector('.Quizz-cadastrados-container');
+    div2.classList.remove('escondido');
 }
 
 // tela 2 - Página de um Quizz

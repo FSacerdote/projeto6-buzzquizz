@@ -7,6 +7,7 @@ body{
 }
 .cabecalho{
     height: 69px;
+    width: 100%;
     background-color: #EC362D;;
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
     display: flex;
@@ -17,41 +18,57 @@ body{
     font-weight: 700;
     font-family: 'Roboto', sans-serif;
 }
-.escondido{
-    display: none; 
-}
+
 /* Tela 1*/
 .screen1-content{
     display: flex;
     justify-content: center;
-    flex-wrap: wrap;
+
 }
 .criarQuiz-container{
-    width: 73.26%;
+    width: 73%;
     max-width: 1051px;
-    height: 181px;
-    border: 3px dashed #D5D5D5;
     border-radius: 5px;
     display: flex;
     flex-shrink: 0;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    Margin: 77px 195px;
+    Margin: 35px 195px;
     color: #b9b9b9;
     font-size: 20px;
     font-weight: 400;
     font-family: 'Roboto', sans-serif;
-    flex-shrink: 0;
 }
-.criarQuiz-container div{
+.Todos-quizes{
+    width: 73%;
+    max-width: 1050px;
+    font-size: 20x;
+    font-weight: 700;
+    color: black;
+    line-height: 23.44px;
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.centro{
+    justify-content: center;
+    align-items: center;
+}
+.estilo_inicial{
+    border: 3px dashed #D5D5D5;
+    height: 181px;
+}
+.msg-box{
     width: 250px;
     height: 107px;
     display: flex;
+    flex-direction: column;
     align-items: center;
     text-align: center;
 }
-.criarQuiz-container button{
+.msg-box button{
+    margin-top: 25px;
     background-color: #fafafa;
     height: 40px;
     width: 151px;
@@ -63,39 +80,60 @@ body{
     font-family: 'Roboto', sans-serif;
 }
 
-.criarQuiz-container button:hover{
+.msg-box  button:hover{
     background-color: #EC362D;
     color: white;
     cursor: pointer;
 }
-
-.Todos-quizes{
-    width: 73%;
-    max-width: 1050px;
-    font-size: 20x;
+.Quizz-cadastrados-container{
+    width: 100%;
+}
+.Quizz-cadastrado-lista{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.texto1{
+    color:black;
     font-weight: 700;
-    color: black;
-    line-height: 23.44px;
-    font-family: 'Roboto', sans-serif;
+    font-size: 20px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+.texto1 ion-icon{
+    color: #EC362D;
+    font-size: 30px;
+    margin-left: 17px;
+    border-radius: 15px;
+}
+
+
+.texto1 ion-icon:hover{
+    font-size: 31px;
+    cursor: pointer;
 }
 .Quizz-lista-container{
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
 }
+.container_centro{
+    display: flex;
+    align-items: center;
+}
 .quizz-container{
     Width: 340px;
     Height: 181px;
     margin: 5px;
-    position: relative;
     border-radius: 5px;
     overflow: hidden;
+    background-image: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 64.58%, #000000 100%), url('https://developers.google.com/static/maps/documentation/maps-static/images/error-image-generic.png');
     background-size: cover;
     background-position: center;
-    transition: background-size 0.5s;
     display: flex;
     align-items:  flex-end;
-    flex-wrap: wrap;
 }
 
 .quizz-container:hover{
@@ -115,6 +153,9 @@ body{
     font-family: 'Roboto', sans-serif;
     text-overflow: ellipsis;    
 }
+
+
+
 /*Tela 2*/
 .tela2{
     display: flex;
@@ -383,10 +424,15 @@ input::placeholder{
 }
   
  
+
+.escondido{
+    display: none; 
+}
 @media(max-width: 1100px){
     .criarQuiz-container
     {
         width: 90%;
+        margin: none;
     }
 
     .Todos-quizes{

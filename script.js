@@ -68,6 +68,7 @@ function selecionaQuiz(id){
 }
 
 function carregaQuiz(resposta){
+    document.querySelector(".principal").scrollIntoView();
     tela2.innerHTML = "";
     respostasCertas = 0;
     perguntasRespondidas = 0;
@@ -86,7 +87,7 @@ function carregaQuiz(resposta){
     `;
     for (let i = 0; i < perguntas.length; i++) {
         tela2.innerHTML += `
-            <div class="container-perguntas">
+            <div class="container-perguntas nRespondido">
                 <div style="background-color:${perguntas[i].color};"  class="pergunta">${perguntas[i].title}</div>
                 <div id ="${i}" class="respostas"></div>
             </div>
@@ -106,6 +107,8 @@ function carregaQuiz(resposta){
 function selecionaResposta(resposta) {
     perguntasRespondidas++;
     let respostas = resposta.parentNode;
+    let perguntaAtual = respostas.parentNode;
+    perguntaAtual.classList.remove("nRespondido");
     let listaRespostas = respostas.querySelectorAll(".resposta");
     if (resposta.classList.contains("true")) {
         respostasCertas++;
@@ -121,12 +124,13 @@ function selecionaResposta(resposta) {
     }
     resposta.classList.remove("apagado");
     let perguntas = document.querySelectorAll(".container-perguntas");
+    let proxPergunta = document.querySelector(".nRespondido");
     if(perguntasRespondidas === perguntas.length){
         fimDeQuiz();
     }else{
         setTimeout(()=>{
             if (perguntasRespondidas < perguntas.length) {
-                perguntas[perguntasRespondidas].scrollIntoView();
+                proxPergunta.scrollIntoView({behavior: "smooth", block: "center"});
             }
         }, 2000);
     }
@@ -152,11 +156,9 @@ function fimDeQuiz(){
             <button class="voltar" onclick="voltaHome()">Voltar pra home</button>
     `;
     let final = document.querySelector(".container-final");
-    setTimeout(()=>{final.scrollIntoView();}, 2000);
+    setTimeout(()=>{final.scrollIntoView({behavior: "smooth", block: "center"});}, 2000);
 }
 function reiniciaQuiz(){
-    let comeco = document.querySelector(".header-Quiz");
-    comeco.scrollIntoView();
     selecionaQuiz(quizAtual.data.id);
 }
 function voltaHome(){

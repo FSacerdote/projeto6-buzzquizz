@@ -6,6 +6,10 @@ body{
     font-family: 'Roboto', sans-serif;
 }
 .cabecalho{
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
     height: 69px;
     width: 100%;
     background-color: #EC362D;;
@@ -17,6 +21,10 @@ body{
     font-size: 37px;
     font-weight: 700;
     font-family: 'Roboto', sans-serif;
+    z-index: 1;
+}
+.principal{
+    margin-top: 69px;
 }
 
 /* Tela 1*/
@@ -223,11 +231,13 @@ body{
     margin-right: 21px;
 }
 .levels-info p{
+    width: 300px;
     font-family: 'Roboto';
     font-weight: 700;
     font-size: 19px;
     line-height: 25px;
     color: #484848;
+    word-wrap: break-word;
 }
 .respostas{
     width: 688px;
@@ -248,11 +258,13 @@ body{
     height: 175px;
 }
 .resposta p{
+    width: 330px;
     margin-top: 8px;
     font-family: 'Roboto';
     font-weight: 700;
     font-size: 20px;
     line-height: 23px;
+    word-wrap: break-word;
 }
 .reiniciar{
     width: 260px;

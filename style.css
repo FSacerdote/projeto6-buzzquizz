@@ -354,6 +354,32 @@ input::placeholder{
     font-size: 19px;
     font-style: italic;
  }
+
+
+ textarea{
+    padding-left: 19px;
+    margin-left: 16px;
+    display: block;
+    width: 561px;
+    height: 46px;
+    border: 1px solid #D1D1D1;
+    border-radius: 5px;
+    font-family: 'Roboto';
+    font-size: 19px;
+    font-weight: 400;
+    font-size: 19px;
+}
+textarea::placeholder{
+    color: #BABABA;
+    font-weight: 400;
+    font-size: 19px;
+    font-style: italic;
+ }
+
+
+
+
+
 .next-step{
     margin-top: 85px;
     background-color: #EC362D;
@@ -600,5 +626,9 @@ input::placeholder{
     }
     .voltar{
         margin-bottom: 66px;
+    }
+    .big{
+        height : 340px;
+        text-align: top;
     }
 }

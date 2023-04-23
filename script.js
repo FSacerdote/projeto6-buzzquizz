@@ -7,7 +7,7 @@ let respostasCertas, respostasIncorretas;
 let quizAtual;
 let titulo, urlImagem, qtdPerguntas, qtdNiveis;
 let textoPergunta, corFundo, respostaCorreta, urlImagemCorreta, respostaIncorreta, urlImagemIncorreta;
-let pagina;
+
 
 //Tela 1 - Lista de Quizzes
 
@@ -220,7 +220,7 @@ function validarInfoQuizz() {
     let perguntasHTML = '';
 
     for (let i = 1; i <= parseInt(qtdPerguntas.value); i++) {
-      let collapsedClass = i > 1 ? 'collapsed' : '';
+      let collapsedClass = i > 1 ? 'collapsed' : 'expanded';
       perguntasHTML += `
         <div class="create-question ${collapsedClass}">
           <div class="question-header" onclick="toggleQuestion(this)">
@@ -257,38 +257,41 @@ function validarInfoQuizz() {
  }
 
  function toggleQuestion(questionHeader) {
-    const question = questionHeader.parentNode;
-    const questionContent = question.querySelector('.question-content');
-  
-    const allQuestions = document.querySelectorAll('.create-question');
-  
-    allQuestions.forEach((q) => {
-      const qHeader = q.querySelector('.question-header');
-      const qContent = q.querySelector('.question-content');
-  
-      if (q !== question) {
-        qHeader.classList.remove('expanded');
-        qContent.classList.add('escondido');
+  const question = questionHeader.parentNode;
+  const questionContent = question.querySelector('.question-content');
+
+  const allQuestions = document.querySelectorAll('.create-question');
+
+  allQuestions.forEach((q) => {
+    const qHeader = q.querySelector('.question-header');
+    const qContent = q.querySelector('.question-content');
+
+    if (q !== question) {
+      qHeader.classList.remove('expanded');
+      qContent.classList.add('escondido');
+      if (!q.classList.contains('initialized')) {
         q.classList.add('collapsed');
-        q.classList.remove('expanded');
-        qHeader.querySelector('img').classList.remove('escondido'); 
+        qHeader.querySelector('img').classList.remove('escondido');
       }
-    });
-  
-    if (question.classList.contains('collapsed')) {
-      question.classList.remove('collapsed');
-      question.classList.add('expanded');
-      questionHeader.classList.add('expanded');
-      questionContent.classList.remove('escondido');
-      questionHeader.querySelector('img').classList.add('escondido'); 
-    } else {
-      question.classList.remove('expanded');
-      question.classList.add('collapsed');
-      questionHeader.classList.remove('expanded');
-      questionContent.classList.add('escondido');
-      questionHeader.querySelector('img').classList.remove('escondido');
     }
+  });
+
+  if (question.classList.contains('collapsed')) {
+    question.classList.remove('collapsed');
+    question.classList.add('expanded');
+    questionHeader.classList.add('expanded');
+    questionContent.classList.remove('escondido');
+    questionHeader.querySelector('img').classList.add('escondido');
+  } else {
+    question.classList.remove('expanded');
+    question.classList.add('collapsed');
+    questionHeader.classList.remove('expanded');
+    questionContent.classList.add('escondido');
+    questionHeader.querySelector('img').classList.remove('escondido');
   }
+}
+
+
   function validarPerguntas() {
     let perguntas = document.querySelectorAll(".create-question");
 
@@ -343,45 +346,31 @@ function validarInfoQuizz() {
     }
 
 
-   preencher_cadastro_nivel(qtdNiveis);
-   tela3.innerHTML = '';
-   tela3.innerHTML = pagina;
+   let pagina3 = preencher_cadastro_nivel(qtdNiveis.value);
+   tela3.innerHTML = pagina3;
   }
   //função para preencher os níveis na tela de cadastro (retorna HTML)
   
   function preencher_cadastro_nivel(qtdNiveis){
     pagina = `<span>Agora, decida os níveis</span>`
     
-    pagina+=`
-    <div class="lvl-container">
-        <div class="lvl-head" onclick="lvlscroll('lvl1','lvlbtn1')">
-            <div>Nível 1</div>   
-            <img id= 'lvlbtn1' class='escondido' src="./img.png" alt="caderno">
+    for (let i = 1; i <= qtdNiveis; i++) {
+      let collapsedClass = i > 1 ? 'collapsed' : 'expanded';
+      pagina += `
+        <div class="create-question ${collapsedClass}">
+          <div class="question-header" onclick="toggleQuestion(this)">
+            <span>Nível ${i}</span>
+            <img src="./img.png">
+          </div>
+          <div class="question-content">
+            <input type="text" placeholder="Título do nível">
+            <input type="number" placeholder="% de acerto mínima" id="quantity${i}" name="qunatity${i}" min="0" max="100">
+            <input type="text" placeholder="URL da imagem">
+            <textarea placeholde='Descrição do nível' class='big'></textarea>
+          </div>
         </div>
-        <div id='lvl1' class="lvl-scroll">
-            <textarea placeholder="  Título do nivel"></textarea>
-            <textarea placeholder="  % de Acerto mínimo"></textarea>
-            <textarea placeholder="  URL da imagem"></textarea>
-            <textarea class="big" placeholder="  Descrição do nível"></textarea>
-        </div>
-    </div>`;
-
-    for(let cont = 2;cont <= qtdNiveis;cont++){
-        pagina+= `
-        <div class="lvl-container">
-            <div class="lvl-head" onclick="lvlscroll('lvl${cont}','lvlbtn${cont}')">
-                <div>Nível ${cont}</div>   
-                <img id= 'lvlbtn${cont}' src="./img.png" alt="caderno">
-            </div>
-            <div id='lvl${cont}' class="lvl-scroll lvlHidden">
-                <textarea placeholder="  Título do nivel"></textarea>
-                <textarea placeholder="  % de Acerto mínimo"></textarea>
-                <textarea placeholder="  URL da imagem"></textarea>
-                <textarea class="big" placeholder="  Descrição do nível"></textarea>
-            </div>
-        </div>`;
+      `;
     }
-
     pagina+= `
         <div onclick="finalizaQuizz()" class="next-step btn-ajust">Finalizar Quizz</div> 
     `;
@@ -398,11 +387,11 @@ function validarInfoQuizz() {
   
   //função para validar nível
   function validarNivel(){
-    let pagina = document.querySelectorAll('.lvl-scroll');
+    let pagina = document.querySelectorAll('.question-content');
     let resultado = true;
     let porcentagens = [];
     pagina.forEach(el=>{
-        let nivel = el.querySelectorAll('textarea');
+        let nivel = el.querySelectorAll('input');
         porcentagens.push(nivel[1].value);
         resultado = resultado && (validar_titulo(nivel[0].value))&&(validar_porcentagem(nivel[1].value))&&(validar_url(nivel[2].value))&&(validar_descricao(nivel[3].value));
         console.log(resultado);

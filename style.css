@@ -636,4 +636,7 @@ textarea::placeholder{
     .quizz-container{
         width: 100%;
     }
+    .quizzFinalizado{
+        width: 90%;
+    }
 }

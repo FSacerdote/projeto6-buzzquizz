@@ -164,11 +164,8 @@ function reiniciaQuiz(){
     selecionaQuiz(quizAtual.data.id);
 }
 function voltaHome(){
-    let comeco = document.querySelector(".header-Quiz");
-    comeco.scrollIntoView();
-    tela2.innerHTML = "";
-    tela1.classList.remove("escondido");
-    tela2.classList.add("escondido");
+    document.querySelector(".principal").scrollIntoView();
+    window.location.reload();
 }
 function comparador() { 
 	return Math.random() - 0.5; 
@@ -386,7 +383,7 @@ function validarInfoQuizz() {
     }
 
     pagina+= `
-        <div onclick="alert('fim')" class="next-step btn-ajust">Finalizar Quizz</div> 
+        <div onclick="finalizaQuizz()" class="next-step btn-ajust">Finalizar Quizz</div> 
     `;
     return pagina;
   }
@@ -464,6 +461,52 @@ function validarInfoQuizz() {
         }
     return false;
    }
+
+// tela 3.4
+
+function finalizaQuizz(){
+  let novoQuizz = {
+    title: titulo.value,
+    image: urlImagem.value,
+    questions: [],
+    levels: [],
+  }
+  let infoLevels = document.querySelectorAll(".lvl-scroll");
+  let infoQuestion = document.querySelectorAll(".question-content")
+  for (let i = 0; i < qtdPerguntas; i++) {
+    let questionInfo = infoQuestion[i].querySelectorAll('input');
+    let novaPergunta = {
+      title: questionInfo[0].value,
+      color: questionInfo[1].value,
+      answers: [],
+    };
+    novoQuizz.levels.push(novaPergunta);
+  }
+  for (let i = 0; i < qtdNiveis; i++) {
+    let nivelInfo = infoLevels[i].querySelectorAll('textarea');
+    let novoNivel = {
+      title: nivelInfo[0].value,
+      image: nivelInfo[1].value,
+      text: nivelInfo[2].value,
+      minValue: nivelInfo[3].value,
+    };
+    novoQuizz.levels.push(novoNivel);
+  }
+  let promessaNovoQuiz = axios.post("https://mock-api.driven.com.br/api/vm/buzzquizz/quizzes", novoQuizz);
+  promessaNovoQuiz.then(carregaQuizzPronto);
+}
+function carregaQuizzPronto(resposta){
+  console.log(resposta);
+  tela3.innerHTML = `
+    <p class="textoFinal">Seu quizz está pronto!</p>
+    <div class="quizzFinalizado" onclick="selecionaQuiz(3)">
+      <img src="${urlImagem.value}"/>
+      <p>${titulo.value}</p>
+    </div>
+    <button class="reiniciar" onclick="selecionaQuiz(3)">Acessar Quizz</button>
+    <button class="voltar" onclick="voltaHome()">Voltar pra home</button>
+  `;
+}
   
   
   

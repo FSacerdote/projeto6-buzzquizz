@@ -3,8 +3,11 @@ const tela1 = document.querySelector(".tela1");
 const tela2 = document.querySelector(".tela2");
 const tela3 = document.querySelector(".tela3");
 let perguntasRespondidas;
-let respostasCertas;
+let respostasCertas, respostasIncorretas;
 let quizAtual;
+let titulo, urlImagem, qtdPerguntas, qtdNiveis;
+let textoPergunta, corFundo, respostaCorreta, urlImagemCorreta, respostaIncorreta, urlImagemIncorreta;
+let pagina;
 
 //Tela 1 - Lista de Quizzes
 
@@ -192,10 +195,10 @@ function preencher_pagina3() {
 };
 
 function validarInfoQuizz() {
-    const titulo = document.querySelector('input[placeholder="Título do seu quizz"]');
-    const urlImagem = document.querySelector('input[placeholder="URL da imagem do seu quizz"]');
-    const qtdPerguntas = document.querySelector('input[placeholder="Quantidade de perguntas do quizz"]');
-    const qtdNiveis = document.querySelector('input[placeholder="Quantidade de níveis do quizz"]');
+   titulo = document.querySelector('input[placeholder="Título do seu quizz"]');
+   urlImagem = document.querySelector('input[placeholder="URL da imagem do seu quizz"]');
+   qtdPerguntas = document.querySelector('input[placeholder="Quantidade de perguntas do quizz"]');
+   qtdNiveis = document.querySelector('input[placeholder="Quantidade de níveis do quizz"]');
   
     if (!titulo.value || titulo.value.length < 20 || titulo.value.length > 65) {
       alert('Por favor, informe um título com no mínimo 20 e no máximo 65 caracteres.');
@@ -291,65 +294,66 @@ function validarInfoQuizz() {
   }
   function validarPerguntas() {
     let perguntas = document.querySelectorAll(".create-question");
-  
+
     for (let i = 0; i < perguntas.length; i++) {
       let pergunta = perguntas[i];
-  
-      let textoPergunta = pergunta.querySelector("input[type='text'][placeholder='Texto da pergunta']").value;
+
+      textoPergunta = pergunta.querySelector("input[type='text'][placeholder='Texto da pergunta']").value;
       if (textoPergunta.length < 20) {
         alert("O texto da pergunta " + (i + 1) + " deve ter pelo menos 20 caracteres.");
         return false;
       }
-  
-      let corFundo = pergunta.querySelector("input[type='text'][placeholder='Cor de fundo da pergunta']").value;
+
+      corFundo = pergunta.querySelector("input[type='text'][placeholder='Cor de fundo da pergunta']").value;
       if (!/^#[0-9A-Fa-f]{6}$/.test(corFundo)) {
         alert("A cor de fundo da pergunta " + (i + 1) + " deve ser uma cor em hexadecimal.");
         return false;
       }
-  
-      let respostaCorreta = pergunta.querySelector("input[type='text'][placeholder='Resposta correta']").value;
+
+      respostaCorreta = pergunta.querySelector("input[type='text'][placeholder='Resposta correta']").value;
       if (respostaCorreta === "") {
         alert("A resposta correta da pergunta " + (i + 1) + " não pode estar vazia.");
         return false;
       }
-  
-      let urlImagemCorreta = pergunta.querySelector("input[type='text'][placeholder='URL da imagem']").value;
-      if (!isUrlValida(urlImagemCorreta)) {
+
+      urlImagemCorreta = pergunta.querySelector("input[type='text'][placeholder='URL da imagem']").value;
+      if (!urlImagemCorreta || !/^(ftp|http|https):\/\/[^ "]+$/.test(urlImagemCorreta)) {
         alert("A URL da imagem da resposta correta da pergunta " + (i + 1) + " deve ter formato de URL.");
         return false;
       }
-  
-      let respostasIncorretas = pergunta.querySelectorAll("input[type='text'][placeholder^='Resposta incorreta']");
-      let peloMenosUmaRespostaIncorretaPreenchida = false;
-  
-      for (let j = 0; j < respostasIncorretas.length; j += 2) {
+
+      respostasIncorretas = pergunta.querySelectorAll("input[type='text'][placeholder^='Resposta incorreta']");
+      let temRespostaIncorreta = false;
+
+      for (let j = 0; j < respostasIncorretas.length; j++) {
         let respostaIncorreta = respostasIncorretas[j].value;
         if (respostaIncorreta !== "") {
-          peloMenosUmaRespostaIncorretaPreenchida = true;
-          let urlImagemIncorreta = respostasIncorretas[j + 1].value;
-          if (!isUrlValida(urlImagemIncorreta)) {
+          temRespostaIncorreta = true;
+          urlImagemIncorreta = respostasIncorretas[j].nextElementSibling.value;
+          console.log(urlImagemIncorreta);
+          if (!urlImagemIncorreta || !/^(ftp|http|https):\/\/[^ "]+$/.test(urlImagemIncorreta)) {
             alert("A URL da imagem da resposta incorreta da pergunta " + (i + 1) + " deve ter formato de URL.");
             return false;
           }
+          j++;
         }
-      }
-  
-      if (!peloMenosUmaRespostaIncorretaPreenchida) {
+      }      
+
+      if (!temRespostaIncorreta) {
         alert("Pelo menos uma resposta incorreta da pergunta " + (i + 1) + " deve estar preenchida.");
         return false;
       }
     }
-  
-    return true;
-  }
-  
- 
-  
 
+
+   preencher_cadastro_nivel(qtdNiveis);
+   tela3.innerHTML = '';
+   tela3.innerHTML = pagina;
+  }
   //função para preencher os níveis na tela de cadastro (retorna HTML)
   
   function preencher_cadastro_nivel(qtdNiveis){
-    let pagina = `<span>Agora, decida os níveis</span>`
+    pagina = `<span>Agora, decida os níveis</span>`
     
     pagina+=`
     <div class="lvl-container">

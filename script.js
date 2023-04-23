@@ -7,6 +7,13 @@ let respostasCertas, respostasIncorretas;
 let quizAtual;
 let titulo, urlImagem, qtdPerguntas, qtdNiveis;
 let textoPergunta, corFundo, respostaCorreta, urlImagemCorreta, respostaIncorreta, urlImagemIncorreta;
+let novoQuizzResposta;
+let novoQuizz = {
+  title: "",
+  image: "",
+  questions: [],
+  levels: [],
+};
 
 
 //Tela 1 - Lista de Quizzes
@@ -293,10 +300,16 @@ function validarInfoQuizz() {
 
 
   function validarPerguntas() {
+    
     let perguntas = document.querySelectorAll(".create-question");
 
     for (let i = 0; i < perguntas.length; i++) {
       let pergunta = perguntas[i];
+      let questions = {
+        title:"",
+        color: "",
+        answers:[],
+      };
 
       textoPergunta = pergunta.querySelector("input[type='text'][placeholder='Texto da pergunta']").value;
       if (textoPergunta.length < 20) {
@@ -321,11 +334,27 @@ function validarInfoQuizz() {
         alert("A URL da imagem da resposta correta da pergunta " + (i + 1) + " deve ter formato de URL.");
         return false;
       }
+      let answerCorreta = {
+        text: "",
+        image: "",
+        isCorrectAnswer: true,
+      }
+      questions.answers = [];
+      questions.title = textoPergunta;
+      questions.color = corFundo;
+      answerCorreta.text = respostaCorreta;
+      answerCorreta.image = urlImagemCorreta;
+      questions.answers.push(answerCorreta);
 
       respostasIncorretas = pergunta.querySelectorAll("input[type='text'][placeholder^='Resposta incorreta']");
       let temRespostaIncorreta = false;
 
       for (let j = 0; j < respostasIncorretas.length; j++) {
+        let answerErrada = {
+          text: "",
+          image: "",
+          isCorrectAnswer: false,
+        }
         let respostaIncorreta = respostasIncorretas[j].value;
         if (respostaIncorreta !== "") {
           temRespostaIncorreta = true;
@@ -336,6 +365,9 @@ function validarInfoQuizz() {
             return false;
           }
           j++;
+          answerErrada.text = respostaIncorreta;
+          answerErrada.image = urlImagemIncorreta;
+          questions.answers.push(answerErrada);
         }
       }      
 
@@ -343,8 +375,8 @@ function validarInfoQuizz() {
         alert("Pelo menos uma resposta incorreta da pergunta " + (i + 1) + " deve estar preenchida.");
         return false;
       }
+      novoQuizz.questions.push(questions);
     }
-
 
    let pagina3 = preencher_cadastro_nivel(qtdNiveis.value);
    tela3.innerHTML = pagina3;
@@ -366,7 +398,7 @@ function validarInfoQuizz() {
             <input type="text" placeholder="Título do nível">
             <input type="number" placeholder="% de acerto mínima" id="quantity${i}" name="qunatity${i}" min="0" max="100">
             <input type="text" placeholder="URL da imagem">
-            <textarea placeholde='Descrição do nível' class='big'></textarea>
+            <textarea placeholder='Descrição do nível' class='big'></textarea>
           </div>
         </div>
       `;
@@ -452,53 +484,89 @@ function validarInfoQuizz() {
    }
 
 // tela 3.4
-
 function finalizaQuizz(){
-  let novoQuizz = {
-    title: titulo.value,
-    image: urlImagem.value,
-    questions: [],
-    levels: [],
-  }
-  let infoLevels = document.querySelectorAll(".lvl-scroll");
-  let infoQuestion = document.querySelectorAll(".question-content")
-  for (let i = 0; i < qtdPerguntas; i++) {
-    let questionInfo = infoQuestion[i].querySelectorAll('input');
-    let novaPergunta = {
-      title: questionInfo[0].value,
-      color: questionInfo[1].value,
-      answers: [],
-    };
-    novoQuizz.levels.push(novaPergunta);
-  }
-  for (let i = 0; i < qtdNiveis; i++) {
-    let nivelInfo = infoLevels[i].querySelectorAll('textarea');
-    let novoNivel = {
-      title: nivelInfo[0].value,
-      image: nivelInfo[1].value,
-      text: nivelInfo[2].value,
-      minValue: nivelInfo[3].value,
-    };
-    novoQuizz.levels.push(novoNivel);
-  }
+  objNiveis();
+  novoQuizz.image = urlImagem.value;
+  novoQuizz.title = titulo.value;
+  console.log(novoQuizz);
   let promessaNovoQuiz = axios.post("https://mock-api.driven.com.br/api/vm/buzzquizz/quizzes", novoQuizz);
   promessaNovoQuiz.then(carregaQuizzPronto);
 }
 function carregaQuizzPronto(resposta){
   console.log(resposta);
+  novoQuizzResposta = resposta;
   tela3.innerHTML = `
     <p class="textoFinal">Seu quizz está pronto!</p>
-    <div class="quizzFinalizado" onclick="selecionaQuiz(3)">
+    <div class="quizzFinalizado" onclick="selecionaQuiz(${resposta.data.id})">
       <img src="${urlImagem.value}"/>
       <p>${titulo.value}</p>
     </div>
-    <button class="reiniciar" onclick="selecionaQuiz(3)">Acessar Quizz</button>
+    <button class="reiniciar" onclick="selecionaQuiz(${resposta.data.id})">Acessar Quizz</button>
     <button class="voltar" onclick="voltaHome()">Voltar pra home</button>
   `;
 }
   
-  
-  
+function preencher_tela1(){
+  titulo = document.querySelector('input[placeholder="Título do seu quizz"]');
+  urlImagem = document.querySelector('input[placeholder="URL da imagem do seu quizz"]');
+  qtdPerguntas = document.querySelector('input[placeholder="Quantidade de perguntas do quizz"]');
+  qtdNiveis = document.querySelector('input[placeholder="Quantidade de níveis do quizz"]');
 
+  titulo.value = "esse texto possui mais de 20 caracteres";
+  urlImagem.value = "https://i.pinimg.com/originals/a4/63/fb/a463fbb24303a7f39d0cdbb65f014c00.png";
+  qtdPerguntas.value = 3;
+  qtdNiveis.value = 3;
+}
+function preencher_tela2(){
+  let perguntas = document.querySelectorAll(".create-question");
 
+  for (let i = 0; i < perguntas.length; i++) {
+    let lista = perguntas[i].querySelectorAll("input");
+    lista[0].value = `titulo da pergunta ${i} COm mais de 20 caracteres`;
+    lista[1].value = "#ffffff";
+    lista[2].value = "Titulo da resposta correta";
+    lista[3].value = 'https://i.pinimg.com/originals/a4/63/fb/a463fbb24303a7f39d0cdbb65f014c00.png';
+    lista[4].value = "Titulo da resposta errada";
+    lista[5].value = 'https://i.pinimg.com/originals/a4/63/fb/a463fbb24303a7f39d0cdbb65f014c00.png';
+  }
+}
+function preencher_tela3(){
+  let pagina = document.querySelectorAll('.question-content');
+  pagina.forEach((el,index)=>{
+      let nivel_lista = el.querySelectorAll('input');
 
+      let descricao_nivel = el.querySelector('textarea');
+      let titulo_nivel = nivel_lista[0];
+      let porcentagem_nivel = nivel_lista[1];
+      let URL_nivel = nivel_lista[2];
+
+      descricao_nivel.value = "Descrição do nivel que é um valor meio grande então estou escrevendo qualquer coisa só para ocupar espaço"
+      titulo_nivel.value = "titulo do nivel x com mais de 20 caracteres"
+      porcentagem_nivel.value = index;
+      URL_nivel.value = "https://i.pinimg.com/originals/a4/63/fb/a463fbb24303a7f39d0cdbb65f014c00.png";
+  }
+  )
+}
+function objNiveis(){
+  let pagina = document.querySelectorAll('.question-content');
+  pagina.forEach((el,index)=>{
+      let nivel = {
+        title: "",
+			  image: "",
+			  text: "",
+			  minValue: 0
+      }
+      let nivel_lista = el.querySelectorAll('input');
+
+      let descricao_nivel = el.querySelector('textarea').value;
+      let titulo_nivel = nivel_lista[0].value;
+      let porcentagem_nivel = nivel_lista[1].value;
+      let URL_nivel = nivel_lista[2].value;
+      nivel.title = titulo_nivel;
+      nivel.image = URL_nivel;
+      nivel.text = descricao_nivel;
+      nivel.minValue = Number(porcentagem_nivel);
+      novoQuizz.levels.push(nivel);
+  }
+  )
+}

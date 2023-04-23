@@ -7,7 +7,6 @@ let respostasCertas, respostasIncorretas;
 let quizAtual;
 let titulo, urlImagem, qtdPerguntas, qtdNiveis;
 let textoPergunta, corFundo, respostaCorreta, urlImagemCorreta, respostaIncorreta, urlImagemIncorreta;
-let novoQuizzResposta;
 let novoQuizz = {
   title: "",
   image: "",
@@ -15,13 +14,15 @@ let novoQuizz = {
   levels: [],
 };
 
+const chave = 'asdfghjl';
+let ListaKeys = [];
 
 //Tela 1 - Lista de Quizzes
 
 let quiz;
 const promisse = axios.get('https://mock-api.driven.com.br/api/vm/buzzquizz/quizzes');
 promisse.then(Get_Lista);
-promisse.catch(resposta => console.log('erro ao conectar com o servidor: ' + resposta));
+promisse.catch(voltaHome);
 
 let Lista_Quizzes; //Variavel que vai receber a lista de quizzes
 
@@ -32,6 +33,15 @@ function Get_Lista(resposta){
     const lista = document.querySelector('.Quizz-lista-container');
     lista.innerHTML = '';
     resposta.data.forEach(adicionar_Quizz);
+    getMemoria();
+    if(ListaKeys != null){
+      carregarMemoria()
+    }else{
+      let telax = document.querySelector('.msg-box');
+      console.log('chegou aqui');
+      telax.innerHTML = `Você não criou nenhum quizz ainda :(
+        <button onclick="preencher_pagina3()">Criar Quiz</button>`;
+    };
 }
 
 
@@ -55,7 +65,6 @@ function adicionar_Quizz(elemento){
         const el = document.querySelectorAll('.Quizz'+id);
         const back = `linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 64.58%, #000000 100%),url('${img}'), url('https://developers.google.com/static/maps/documentation/maps-static/images/error-image-generic.png')`;
         el.forEach(elemento => elemento.style.backgroundImage = back);
-        //  onerror="corrigirImagem(this)"
 }
 
 function carregarMemoria(){
@@ -67,6 +76,17 @@ function carregarMemoria(){
 
     const div2 = document.querySelector('.Quizz-cadastrados-container');
     div2.classList.remove('escondido');
+
+    let caixa1 = document.querySelector('.Quizz-cadastrado-lista');
+    caixa1.innerHTML = '';
+    ListaKeys.forEach((el,index) => {
+      caixa1.innerHTML += `
+      <div class="quizz-container personalQuizz${el.id}" onclick="selecionaQuiz(${el.id})">
+        <p>${el.titulo}</p>
+      </div>`;
+    let caixa2 = container.querySelector(`.personalQuizz${el.id}`);
+    caixa2.style.backgroundImage = `linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 64.58%, #000000 100%),url('${el.imagem}'), url('https://developers.google.com/static/maps/documentation/maps-static/images/error-image-generic.png')`;
+  })
 }
 
 // tela 2 - Página de um Quizz
@@ -404,7 +424,7 @@ function validarInfoQuizz() {
       `;
     }
     pagina+= `
-        <div onclick="finalizaQuizz()" class="next-step btn-ajust">Finalizar Quizz</div> 
+        <div onclick="validarNivel()" class="next-step btn-ajust">Finalizar Quizz</div> 
     `;
     return pagina;
   }
@@ -423,17 +443,29 @@ function validarInfoQuizz() {
     let resultado = true;
     let porcentagens = [];
     pagina.forEach(el=>{
+        let nivel_lista = el.querySelectorAll('input');
+
+        let descricao_nivel = el.querySelector('textarea').value;
+        let titulo_nivel = nivel_lista[0].value;
+        let porcentagem_nivel = nivel_lista[1].value;
+        let URL_nivel = nivel_lista[2].value;
+
         let nivel = el.querySelectorAll('input');
-        porcentagens.push(nivel[1].value);
-        resultado = resultado && (validar_titulo(nivel[0].value))&&(validar_porcentagem(nivel[1].value))&&(validar_url(nivel[2].value))&&(validar_descricao(nivel[3].value));
+        porcentagens.push(porcentagem_nivel);
+        resultado = resultado && (validar_titulo(titulo_nivel))&&(validar_porcentagem(porcentagem_nivel))&&(validar_url(URL_nivel))&&(validar_descricao(descricao_nivel));
         console.log(resultado);
     }
+
     )
 
     resultado = resultado && validar_lista_porcentagens(porcentagens);
     console.log(resultado);
     console.log(porcentagens);
-    return resultado;
+    if(resultado){
+      finalizaQuizz()
+    }else{
+      alert('Alguns itens não estão preenchidos corretamente, corrija para prosseguir');
+    }
   }
 
   function validar_titulo(titulo){
@@ -494,7 +526,9 @@ function finalizaQuizz(){
 }
 function carregaQuizzPronto(resposta){
   console.log(resposta);
-  novoQuizzResposta = resposta;
+  let novoQuizzResposta = resposta;
+  let quizzCriado = {id:novoQuizzResposta.data.id,key:novoQuizzResposta.data.key,imagem:novoQuizzResposta.data.image, titulo: novoQuizzResposta.data.title};
+  guardarNaMemoria(quizzCriado);
   tela3.innerHTML = `
     <p class="textoFinal">Seu quizz está pronto!</p>
     <div class="quizzFinalizado" onclick="selecionaQuiz(${resposta.data.id})">
@@ -505,6 +539,37 @@ function carregaQuizzPronto(resposta){
     <button class="voltar" onclick="voltaHome()">Voltar pra home</button>
   `;
 }
+
+function guardarNaMemoria(objeto){
+  let ListaMemoria = JSON.parse(localStorage.getItem(chave));
+  if(ListaMemoria == null){
+    ListaMemoria=[];
+  }
+  ListaMemoria.push(objeto);
+  localStorage.setItem(chave,JSON.stringify(ListaMemoria))
+  getMemoria();
+}
+
+function getMemoria(){
+  ListaKeys = JSON.parse(localStorage.getItem(chave));
+  console.log(ListaKeys);
+}
+
+function pegarLista(){
+  if (localStorage.getItem(chave) == null) {
+    console.log('criando registro local');
+    const modelo = [];
+    localStorage.setItem(chave, JSON.stringify(modelo));
+  };
+  
+  if (localStorage.getItem(chave) == '') {
+    return localStorage.getItem(chave);
+  } else {
+    return JSON.parse(localStorage.getItem(chave));
+  }
+  
+}
+
   
 function preencher_tela1(){
   titulo = document.querySelector('input[placeholder="Título do seu quizz"]');
@@ -512,8 +577,8 @@ function preencher_tela1(){
   qtdPerguntas = document.querySelector('input[placeholder="Quantidade de perguntas do quizz"]');
   qtdNiveis = document.querySelector('input[placeholder="Quantidade de níveis do quizz"]');
 
-  titulo.value = "esse texto possui mais de 20 caracteres";
-  urlImagem.value = "https://i.pinimg.com/originals/a4/63/fb/a463fbb24303a7f39d0cdbb65f014c00.png";
+  titulo.value = "Teste do Sonic de novo, SORRY";
+  urlImagem.value = "https://play-lh.googleusercontent.com/4F-WwVKAs56rT6DGSfu1-9sW4MqSjenlIUqWS1K_8iB25ktsHKXXScAwJonvwo7DuMA";
   qtdPerguntas.value = 3;
   qtdNiveis.value = 3;
 }
@@ -523,11 +588,11 @@ function preencher_tela2(){
   for (let i = 0; i < perguntas.length; i++) {
     let lista = perguntas[i].querySelectorAll("input");
     lista[0].value = `titulo da pergunta ${i} COm mais de 20 caracteres`;
-    lista[1].value = "#ffffff";
+    lista[1].value = "#1e1eff";
     lista[2].value = "Titulo da resposta correta";
-    lista[3].value = 'https://i.pinimg.com/originals/a4/63/fb/a463fbb24303a7f39d0cdbb65f014c00.png';
+    lista[3].value = 'https://segredosdomundo.r7.com/wp-content/uploads/2020/08/sonic-origem-historia-e-curiosidades-sobre-o-velocista-4.jpg';
     lista[4].value = "Titulo da resposta errada";
-    lista[5].value = 'https://i.pinimg.com/originals/a4/63/fb/a463fbb24303a7f39d0cdbb65f014c00.png';
+    lista[5].value = 'https://i.kym-cdn.com/entries/icons/original/000/009/798/sanichedgehog.jpg';
   }
 }
 function preencher_tela3(){
@@ -539,13 +604,20 @@ function preencher_tela3(){
       let titulo_nivel = nivel_lista[0];
       let porcentagem_nivel = nivel_lista[1];
       let URL_nivel = nivel_lista[2];
-
       descricao_nivel.value = "Descrição do nivel que é um valor meio grande então estou escrevendo qualquer coisa só para ocupar espaço"
       titulo_nivel.value = "titulo do nivel x com mais de 20 caracteres"
       porcentagem_nivel.value = index;
       URL_nivel.value = "https://i.pinimg.com/originals/a4/63/fb/a463fbb24303a7f39d0cdbb65f014c00.png";
   }
   )
+}
+
+function preencher_tudo(){
+  preencher_tela1();
+  validarInfoQuizz();
+  preencher_tela2();
+  validarPerguntas();
+  preencher_tela3();
 }
 function objNiveis(){
   let pagina = document.querySelectorAll('.question-content');
@@ -569,4 +641,9 @@ function objNiveis(){
       novoQuizz.levels.push(nivel);
   }
   )
+}
+
+function LimparMemoria(){
+  localStorage.setItem(chave, null);
+  getMemoria();
 }

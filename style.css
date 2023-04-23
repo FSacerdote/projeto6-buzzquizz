@@ -98,6 +98,7 @@ body{
 }
 .Quizz-cadastrado-lista{
     display: flex;
+    width: 100%;
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
@@ -571,15 +572,6 @@ textarea::placeholder{
     .Todos-quizes{
         width: 90%;
     }
-
-    .lvl-container{
-        width: 100%;
-        max-width: 600px;
-    }
-    .lvl-scroll textarea{
-        width: 90%;
-        max-width: 375px;
-    }
     .btn-ajust{
         width: 86%;
         max-width: 324px;
@@ -631,5 +623,11 @@ textarea::placeholder{
     .big{
         height : 340px;
         text-align: top;
+    }
+    .Quizz-lista-container{
+        flex-direction: column;
+    }
+    .quizz-container{
+        width: 100%;
     }
 }

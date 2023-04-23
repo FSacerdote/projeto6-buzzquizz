@@ -40,7 +40,7 @@ function Get_Lista(resposta){
       let telax = document.querySelector('.msg-box');
       console.log('chegou aqui');
       telax.innerHTML = `Você não criou nenhum quizz ainda :(
-        <button onclick="preencher_pagina3()">Criar Quiz</button>`;
+        <button data-test="create-btn" onclick="preencher_pagina3()">Criar Quiz</button>`;
     };
 }
 
@@ -58,7 +58,7 @@ function adicionar_Quizz(elemento){
 
 
         lista.innerHTML += 
-        `<div class="quizz-container Quizz${id}" onclick="selecionaQuiz(${elemento.id})">
+        `<div data-test="others-quiz" class="quizz-container Quizz${id}" onclick="selecionaQuiz(${elemento.id})">
             <p>${titulo}</p>
         </div>`
 
@@ -81,7 +81,7 @@ function carregarMemoria(){
     caixa1.innerHTML = '';
     ListaKeys.forEach((el,index) => {
       caixa1.innerHTML += `
-      <div class="quizz-container personalQuizz${el.id}" onclick="selecionaQuiz(${el.id})">
+      <div data-test="my-quiz" class="quizz-container personalQuizz${el.id}" onclick="selecionaQuiz(${el.id})">
         <p>${el.titulo}</p>
       </div>`;
     let caixa2 = container.querySelector(`.personalQuizz${el.id}`);
@@ -109,15 +109,15 @@ function carregaQuiz(resposta){
     const imgQuiz = resposta.data.image;
     const perguntas = resposta.data.questions;
     tela2.innerHTML = `
-        <div class="header-Quiz">
+        <div data-test="banner" class="header-Quiz">
             <img src="${imgQuiz}"/>
             <p>${tituloQuiz}</p>
         </div>
     `;
     for (let i = 0; i < perguntas.length; i++) {
         tela2.innerHTML += `
-            <div class="container-perguntas nRespondido">
-                <div style="background-color:${perguntas[i].color};"  class="pergunta">${perguntas[i].title}</div>
+            <div data-test="question" class="container-perguntas nRespondido">
+                <div data-test="question-title" style="background-color:${perguntas[i].color};"  class="pergunta">${perguntas[i].title}</div>
                 <div id ="${i}" class="respostas"></div>
             </div>
         `;
@@ -125,9 +125,9 @@ function carregaQuiz(resposta){
         for (let j = 0; j < perguntas[i].answers.length; j++) {
             let respostas = document.getElementById(i);
             respostas.innerHTML += `
-            <div onclick="selecionaResposta(this)" class="resposta ${perguntas[i].answers[j].isCorrectAnswer}">
+            <div data-test="answer" onclick="selecionaResposta(this)" class="resposta ${perguntas[i].answers[j].isCorrectAnswer}">
                 <img src="${perguntas[i].answers[j].image}"/>
-                <p>${perguntas[i].answers[j].text}</p>
+                <p data-test="answer-text">${perguntas[i].answers[j].text}</p>
             </div>
             `;
         }
@@ -175,14 +175,14 @@ function fimDeQuiz(){
     }
     tela2.innerHTML += `
             <div class="container-final">
-                <div class="level">${acerto}% de acerto: ${levels[idLevel].title}</div>
+                <div data-test="level-title" class="level">${acerto}% de acerto: ${levels[idLevel].title}</div>
                 <div class="levels-info">
-                    <img src="${levels[idLevel].image}"/>
-                    <p>${levels[idLevel].text}</p>
+                    <img data-test="level-img" src="${levels[idLevel].image}"/>
+                    <p data-test="level-text">${levels[idLevel].text}</p>
                 </div>
             </div>
-            <button class="reiniciar" onclick="reiniciaQuiz()">Reiniciar Quizz</button>
-            <button class="voltar" onclick="voltaHome()">Voltar pra home</button>
+            <button data-test="restart" class="reiniciar" onclick="reiniciaQuiz()">Reiniciar Quizz</button>
+            <button data-test="go-home" class="voltar" onclick="voltaHome()">Voltar pra home</button>
     `;
     let final = document.querySelector(".container-final");
     setTimeout(()=>{final.scrollIntoView({behavior: "smooth", block: "center"});}, 2000);
@@ -209,13 +209,13 @@ function preencher_pagina3() {
   tela3.innerHTML = 
   `<span>Comece pelo começo</span>
     <div class="basic-info">
-        <input type="text" placeholder="Título do seu quizz">
-        <input type="text" placeholder="URL da imagem do seu quizz">
-        <input type="text" placeholder="Quantidade de perguntas do quizz">
-        <input type="text" placeholder="Quantidade de níveis do quizz">
+        <input data-test="title-input" type="text" placeholder="Título do seu quizz">
+        <input data-test="img-input" type="text" placeholder="URL da imagem do seu quizz">
+        <input data-test="questions-amount-input" type="text" placeholder="Quantidade de perguntas do quizz">
+        <input data-test="levels-amount-input" type="text" placeholder="Quantidade de níveis do quizz">
     </div>
         
-    <div onclick="validarInfoQuizz()" class="next-step">Prosseguir para criar perguntas</div>`
+    <div data-test="go-create-questions" onclick="validarInfoQuizz()" class="next-step">Prosseguir para criar perguntas</div>`
 };
 
 function validarInfoQuizz() {
@@ -249,26 +249,26 @@ function validarInfoQuizz() {
     for (let i = 1; i <= parseInt(qtdPerguntas.value); i++) {
       let collapsedClass = i > 1 ? 'collapsed' : 'expanded';
       perguntasHTML += `
-        <div class="create-question ${collapsedClass}">
+        <div data-test="question-ctn" class="create-question ${collapsedClass}">
           <div class="question-header" onclick="toggleQuestion(this)">
             <span>Pergunta ${i}</span>
-            <img src="./img.png">
+            <img data-test="toggle" src="./img.png">
           </div>
           <div class="question-content">
-            <input type="text" placeholder="Texto da pergunta">
-            <input type="text" placeholder="Cor de fundo da pergunta">
+            <input data-test="question-input" type="text" placeholder="Texto da pergunta">
+            <input data-test="question-color-input" type="text" placeholder="Cor de fundo da pergunta">
       
             <span>Resposta correta</span>
-            <input type="text" placeholder="Resposta correta">
-            <input type="text" placeholder="URL da imagem">
+            <input data-test="correct-answer-input" type="text" placeholder="Resposta correta">
+            <input data-test="correct-img-input" type="text" placeholder="URL da imagem">
       
             <span>Respostas incorretas</span>
-            <input type="text" placeholder="Resposta incorreta 1">
-            <input type="text" placeholder="URL da imagem 1">
-            <input type="text" placeholder="Resposta incorreta 2">
-            <input type="text" placeholder="URL da imagem 2">
-            <input type="text" placeholder="Resposta incorreta 3">
-            <input type="text" placeholder="URL da imagem 3">
+            <input data-test="wrong-answer-input" type="text" placeholder="Resposta incorreta 1">
+            <input data-test="wrong-img-input" type="text" placeholder="URL da imagem 1">
+            <input data-test="wrong-answer-input" type="text" placeholder="Resposta incorreta 2">
+            <input data-test="wrong-img-input" type="text" placeholder="URL da imagem 2">
+            <input data-test="wrong-answer-input" type="text" placeholder="Resposta incorreta 3">
+            <input data-test="wrong-img-input" type="text" placeholder="URL da imagem 3">
           </div>
         </div>
       `;
@@ -279,7 +279,7 @@ function validarInfoQuizz() {
       <div class="questions">
         ${perguntasHTML}
       </div>
-      <div onclick="validarPerguntas()" class="next-step">Prosseguir para criar níveis</div>
+      <div data-test="go-create-levels" onclick="validarPerguntas()" class="next-step">Prosseguir para criar níveis</div>
     `;
  }
 
@@ -409,22 +409,22 @@ function validarInfoQuizz() {
     for (let i = 1; i <= qtdNiveis; i++) {
       let collapsedClass = i > 1 ? 'collapsed' : 'expanded';
       pagina += `
-        <div class="create-question ${collapsedClass}">
+        <div data-test="level-ctn" class="create-question ${collapsedClass}">
           <div class="question-header" onclick="toggleQuestion(this)">
             <span>Nível ${i}</span>
-            <img src="./img.png">
+            <img data-test="toggle" src="./img.png">
           </div>
           <div class="question-content">
-            <input type="text" placeholder="Título do nível">
-            <input type="number" placeholder="% de acerto mínima" id="quantity${i}" name="qunatity${i}" min="0" max="100">
-            <input type="text" placeholder="URL da imagem">
-            <textarea placeholder='Descrição do nível' class='big'></textarea>
+            <input data-test="level-input" type="text" placeholder="Título do nível">
+            <input data-test="level-percent-input" type="number" placeholder="% de acerto mínima" id="quantity${i}" name="qunatity${i}" min="0" max="100">
+            <input data-test="level-img-input" type="text" placeholder="URL da imagem">
+            <textarea data-test="level-description-input" placeholder='Descrição do nível' class='big'></textarea>
           </div>
         </div>
       `;
     }
     pagina+= `
-        <div onclick="validarNivel()" class="next-step btn-ajust">Finalizar Quizz</div> 
+        <div data-test="finish" onclick="validarNivel()" class="next-step btn-ajust">Finalizar Quizz</div> 
     `;
     return pagina;
   }
@@ -531,12 +531,12 @@ function carregaQuizzPronto(resposta){
   guardarNaMemoria(quizzCriado);
   tela3.innerHTML = `
     <p class="textoFinal">Seu quizz está pronto!</p>
-    <div class="quizzFinalizado" onclick="selecionaQuiz(${resposta.data.id})">
+    <div data-test="success-banner" class="quizzFinalizado" onclick="selecionaQuiz(${resposta.data.id})">
       <img src="${urlImagem.value}"/>
       <p>${titulo.value}</p>
     </div>
-    <button class="reiniciar" onclick="selecionaQuiz(${resposta.data.id})">Acessar Quizz</button>
-    <button class="voltar" onclick="voltaHome()">Voltar pra home</button>
+    <button data-test="go-quiz" class="reiniciar" onclick="selecionaQuiz(${resposta.data.id})">Acessar Quizz</button>
+    <button data-test="go-home" class="voltar" onclick="voltaHome()">Voltar pra home</button>
   `;
 }
 

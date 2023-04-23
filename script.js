@@ -164,8 +164,13 @@ function fimDeQuiz(){
     let levels = quizAtual.data.levels;
     let acerto = (respostasCertas/perguntasRespondidas*100).toFixed(0);
     let idLevel = 0;
+    let minAnterior = -1;
+    console.log(acerto);  
     for (let i = 0; i < levels.length; i++) {
-        if (acerto >= levels[i].minValue) {
+        console.log(levels[i].minValue);
+        console.log(minAnterior);
+        if (acerto >= levels[i].minValue && levels[i].minValue > minAnterior) {
+            minAnterior = levels[i].minValue;
             idLevel = i;
         }
     }
@@ -318,6 +323,7 @@ function validarInfoQuizz() {
   function validarPerguntas() {
     
     let perguntas = document.querySelectorAll(".create-question");
+    novoQuizz.questions = [];
 
     for (let i = 0; i < perguntas.length; i++) {
       let pergunta = perguntas[i];
@@ -381,7 +387,6 @@ function validarInfoQuizz() {
             alert("A URL da imagem da resposta incorreta da pergunta " + (i + 1) + " deve ter formato de URL.");
             return false;
           }
-          j++;
           answerErrada.text = respostaIncorreta;
           answerErrada.image = urlImagemIncorreta;
           questions.answers.push(answerErrada);

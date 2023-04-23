@@ -405,12 +405,16 @@ input::placeholder{
     font-size: 19px;
     font-weight: 400;
     font-size: 19px;
+    resize: none;
+    margin-bottom: 20px;
+    padding-top: 10px;
 }
 textarea::placeholder{
     color: #BABABA;
     font-weight: 400;
     font-size: 19px;
     font-style: italic;
+    
  }
 
 
@@ -658,11 +662,15 @@ textarea::placeholder{
     .big{
         height : 340px;
         text-align: top;
+        padding-top: 13px;
     }
     .Quizz-lista-container{
         flex-direction: column;
     }
     .quizz-container{
         width: 100%;
+    }
+    .quizzFinalizado{
+        width: 90%;
     }
 }

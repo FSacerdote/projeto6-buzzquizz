@@ -223,7 +223,7 @@ function validarInfoQuizz() {
     let perguntasHTML = '';
 
     for (let i = 1; i <= parseInt(qtdPerguntas.value); i++) {
-      let collapsedClass = i > 1 ? 'collapsed' : '';
+      let collapsedClass = i > 1 ? 'collapsed' : 'expanded';
       perguntasHTML += `
         <div class="create-question ${collapsedClass}">
           <div class="question-header" onclick="toggleQuestion(this)">
@@ -260,38 +260,41 @@ function validarInfoQuizz() {
  }
 
  function toggleQuestion(questionHeader) {
-    const question = questionHeader.parentNode;
-    const questionContent = question.querySelector('.question-content');
-  
-    const allQuestions = document.querySelectorAll('.create-question');
-  
-    allQuestions.forEach((q) => {
-      const qHeader = q.querySelector('.question-header');
-      const qContent = q.querySelector('.question-content');
-  
-      if (q !== question) {
-        qHeader.classList.remove('expanded');
-        qContent.classList.add('escondido');
+  const question = questionHeader.parentNode;
+  const questionContent = question.querySelector('.question-content');
+
+  const allQuestions = document.querySelectorAll('.create-question');
+
+  allQuestions.forEach((q) => {
+    const qHeader = q.querySelector('.question-header');
+    const qContent = q.querySelector('.question-content');
+
+    if (q !== question) {
+      qHeader.classList.remove('expanded');
+      qContent.classList.add('escondido');
+      if (!q.classList.contains('initialized')) {
         q.classList.add('collapsed');
-        q.classList.remove('expanded');
-        qHeader.querySelector('img').classList.remove('escondido'); 
+        qHeader.querySelector('img').classList.remove('escondido');
       }
-    });
-  
-    if (question.classList.contains('collapsed')) {
-      question.classList.remove('collapsed');
-      question.classList.add('expanded');
-      questionHeader.classList.add('expanded');
-      questionContent.classList.remove('escondido');
-      questionHeader.querySelector('img').classList.add('escondido'); 
-    } else {
-      question.classList.remove('expanded');
-      question.classList.add('collapsed');
-      questionHeader.classList.remove('expanded');
-      questionContent.classList.add('escondido');
-      questionHeader.querySelector('img').classList.remove('escondido');
     }
+  });
+
+  if (question.classList.contains('collapsed')) {
+    question.classList.remove('collapsed');
+    question.classList.add('expanded');
+    questionHeader.classList.add('expanded');
+    questionContent.classList.remove('escondido');
+    questionHeader.querySelector('img').classList.add('escondido');
+  } else {
+    question.classList.remove('expanded');
+    question.classList.add('collapsed');
+    questionHeader.classList.remove('expanded');
+    questionContent.classList.add('escondido');
+    questionHeader.querySelector('img').classList.remove('escondido');
   }
+}
+
+
   function validarPerguntas() {
     let perguntas = document.querySelectorAll(".create-question");
 

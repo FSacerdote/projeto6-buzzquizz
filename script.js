@@ -254,12 +254,12 @@ function validarInfoQuizz() {
     for (let i = 1; i <= parseInt(qtdPerguntas.value); i++) {
       let collapsedClass = i > 1 ? 'collapsed' : 'expanded';
       perguntasHTML += `
-        <div class="create-question ${collapsedClass}">
+        <div data-test="question-ctn" class="create-question ${collapsedClass}">
           <div class="question-header" onclick="toggleQuestion(this)">
             <span>Pergunta ${i}</span>
             <img data-test="toggle" src="./img.png">
           </div>
-          <div data-test="question-ctn" class="question-content">
+          <div class="question-content">
             <input data-test="question-input" type="text" placeholder="Texto da pergunta">
             <input data-test="question-color-input" type="text" placeholder="Cor de fundo da pergunta">
       

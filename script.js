@@ -59,12 +59,9 @@ function adicionar_Quizz(elemento){
 
         lista.innerHTML += 
         `<div data-test="others-quiz" class="quizz-container Quizz${id}" onclick="selecionaQuiz(${elemento.id})">
-            <p>${titulo}</p>
+        <img src="${img}" alt="" srcset="" onerror="imagemErrada(this)"/>
+        <div class="gradiente">${titulo}</div>
         </div>`
-
-        const el = document.querySelectorAll('.Quizz'+id);
-        const back = `linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 64.58%, #000000 100%),url('${img}'), url('https://developers.google.com/static/maps/documentation/maps-static/images/error-image-generic.png')`;
-        el.forEach(elemento => elemento.style.backgroundImage = back);
 }
 
 function carregarMemoria(){
@@ -82,10 +79,9 @@ function carregarMemoria(){
     ListaKeys.forEach((el,index) => {
       caixa1.innerHTML += `
       <div data-test="my-quiz" class="quizz-container personalQuizz${el.id}" onclick="selecionaQuiz(${el.id})">
-        <p>${el.titulo}</p>
+        <img src="${el.imagem}" alt="" srcset="" onerror="imagemErrada(this)"/>
+        <div class="gradiente">${el.titulo}</div>
       </div>`;
-    let caixa2 = container.querySelector(`.personalQuizz${el.id}`);
-    caixa2.style.backgroundImage = `linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 64.58%, #000000 100%),url('${el.imagem}'), url('https://developers.google.com/static/maps/documentation/maps-static/images/error-image-generic.png')`;
   })
 }
 
@@ -370,6 +366,7 @@ function validarInfoQuizz() {
       let temRespostaIncorreta = false;
 
       for (let j = 0; j < respostasIncorretas.length; j++) {
+        console.log(j);
         let answerErrada = {
           text: "",
           image: "",
@@ -646,4 +643,8 @@ function objNiveis(){
 function LimparMemoria(){
   localStorage.setItem(chave, null);
   getMemoria();
+}
+
+function imagemErrada(img){
+  img.src = "https://i.stack.imgur.com/vVbxw.png";
 }

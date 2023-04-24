@@ -21,7 +21,7 @@ body{
     font-size: 37px;
     font-weight: 700;
     font-family: 'Roboto', sans-serif;
-    z-index: 1;
+    z-index: 3;
 }
 .principal{
     margin-top: 69px;

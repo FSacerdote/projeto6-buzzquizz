@@ -93,7 +93,7 @@ function selecionaQuiz(id){
 }
 
 function carregaQuiz(resposta){
-    document.querySelector(".principal").scrollIntoView();
+    scrollTo(0,0);
     tela2.innerHTML = "";
     respostasCertas = 0;
     perguntasRespondidas = 0;
@@ -187,12 +187,16 @@ function fimDeQuiz(){
     `;
     let final = document.querySelector(".container-final");
     setTimeout(()=>{final.scrollIntoView({behavior: "smooth", block: "center"});}, 2000);
+    let cadaResposta = document.querySelectorAll(".resposta");
+    for (let k = 0; k < cadaResposta.length; k++) {
+        cadaResposta[k].onclick = false;
+    }
 }
 function reiniciaQuiz(){
     selecionaQuiz(quizAtual.data.id);
 }
 function voltaHome(){
-    document.querySelector(".principal").scrollIntoView();
+    scrollTo(0,0);
     window.location.reload();
 }
 function comparador() { 
